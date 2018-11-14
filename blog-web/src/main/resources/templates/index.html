@@ -1,0 +1,45 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<replace th:replace="replace::head"></replace>
+<body>
+<replace th:replace="replace::header"></replace>
+<div class="box">
+    <div class="newsbox f_l">
+        <div class="newstitle"><span><a href="#">+</a></span><b>博客日记</b></div>
+        <ul class="newsli">
+            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+            <li><a href="#" target="_blank" title="作为一个设计师,如果遭到质疑你是否能恪守自己的原则?">作为一个设计师,如果遭到质疑你是否能恪守自己的原则</a></li>
+            <li><a href="#" target="_blank" title="Come on,行动起来吧!我们和时间来一场赛跑!">Come on,行动起来吧!我们和时间来一场赛跑!</a></li>
+            <li><a href="#" target="_blank" title="或许换一个活法,能让你走出阴霾">或许换一个活法,能让你走出阴霾</a></li>
+            <li><a href="#" target="_blank" title="即便是坑，我也想要拉你入伙！">即便是坑，我也想要拉你入伙！</a></li>
+            <li><a href="#" target="_blank" title="女程序员职业生涯该如何发展？">女程序员职业生涯该如何发展？</a></li>
+        </ul>
+    </div>
+    <div class="newsbox f_l">
+        <div class="newstitle"><span><a href="/zcfg/">+</a></span><b>博客日记</b></div>
+        <ul class="newsli">
+            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+            <li><a href="#" target="_blank" title="作为一个设计师,如果遭到质疑你是否能恪守自己的原则?">作为一个设计师,如果遭到质疑你是否能恪守自己的原则</a></li>
+            <li><a href="#" target="_blank" title="Come on,行动起来吧!我们和时间来一场赛跑!">Come on,行动起来吧!我们和时间来一场赛跑!</a></li>
+            <li><a href="#" target="_blank" title="或许换一个活法,能让你走出阴霾">或许换一个活法,能让你走出阴霾</a></li>
+            <li><a href="#" target="_blank" title="即便是坑，我也想要拉你入伙！">即便是坑，我也想要拉你入伙！</a></li>
+            <li><a href="#" target="_blank" title="女程序员职业生涯该如何发展？">女程序员职业生涯该如何发展？</a></li>
+        </ul>
+    </div>
+    <div class="blank"></div>
+
+    <div th:class="${iterStat.first}?'sbox f_l':'sbox f_l ml'" th:each="top, iterStat:${tops}">
+        <span th:text="${top.memo}"></span>
+        <h2 th:text="${top.title}"></h2>
+        <p th:text="${top.synopsis}"></p>
+        <a th:href="@{'/info/'+${top.blog_id}}" class="read">点击阅读</a>
+    </div>
+    <div class="blank"></div>
+
+    <replace th:replace="replace::blogList"></replace>
+
+    <replace th:replace="replace::aside"></replace>
+</div>
+<replace th:replace="replace::footer"></replace>
+</body>
+</html>

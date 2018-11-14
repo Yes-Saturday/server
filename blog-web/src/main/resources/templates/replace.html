@@ -1,0 +1,56 @@
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <title>ggboy-shakalaka Home</title>
+    <meta name="keywords" content="个人博客,杨青个人博客,个人博客模板,杨青"/>
+    <meta name="description" content="杨青个人博客，是一个站在web前端设计之路的女程序员个人网站，提供个人博客模板免费资源下载的个人原创网站。"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{css/index.css}" rel="stylesheet">
+    <script th:src="@{https://code.jquery.com/jquery-1.12.4.min.js}"></script>
+    <script th:src="@{js/base.js}"></script>
+</head>
+
+<footer th:fragment="footer">
+    <p>Design by <a href="http://www.yangqq.com" target="_blank">杨青个人博客</a></p>
+</footer>
+
+<header th:fragment="header">
+    <div class="logo"><a href="/">Blog >> ggboy-shakalaka</a></div>
+    <nav>
+        <ul id="starlist">
+            <li><a href="info">慢生活</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside th:fragment="aside">
+    <div class="ztbox">
+        <ul>
+            <li><a href="#" title="个人博客模板 ( 38 )">个人博客模板 ( 38 )</a></li>
+        </ul>
+    </div>
+    <div class="paihang">
+        <h2>点击排行</h2>
+        <ul>
+            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+        </ul>
+    </div>
+    <div class="paihang">
+        <h2>站长推荐</h2>
+        <ul>
+            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+        </ul>
+    </div>
+    <div class="paihang">
+        <h2>友情链接</h2>
+        <ul>
+            <li><a href="https://github.com/ggboy-shakalaka" target="_blank">Github -> ggboy-shakalaka</a></li>
+        </ul>
+    </div>
+</aside>
+
+<div class="blogs" th:fragment="blogList">
+    <div class="bloglist" th:each="blog:${blogList}">
+        <h2><a  th:href="@{'/info/'+${blog.blog_id}}" title="程序员请放下你的技术情节，与你的同伴一起进步" th:text="${blog.title}"></a></h2>
+        <p th:text="${blog.synopsis}"></p>
+    </div>
+</div>
