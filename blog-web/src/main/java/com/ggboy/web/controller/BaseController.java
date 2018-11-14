@@ -1,6 +1,5 @@
 package com.ggboy.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ggboy.common.domain.IPage;
 import com.ggboy.common.exception.BusinessException;
 import com.ggboy.core.enums.BlogOrderBy;
@@ -26,7 +25,6 @@ public class BaseController {
         var tops = blogService.queryTop();
         param.put("tops", tops);
         param.put("blogList", blogList);
-        System.out.println(JSON.toJSONString(param));
         return "index";
     }
 

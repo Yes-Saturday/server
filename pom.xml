@@ -4,17 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <groupId>com.ggboy.springboot-demo</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>com.ggboy.simple-blog</groupId>
+    <artifactId>blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>demo</name>
+    <name>blog</name>
 
     <modules>
-        <module>demo-web</module>
-        <module>demo-common</module>
-        <module>demo-sms</module>
-        <module>demo-system</module>
+        <module>blog-web</module>
+        <module>blog-common</module>
+        <module>blog-system</module>
+        <module>blog-core</module>
     </modules>
 
     <properties>
@@ -61,6 +61,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-devtools</artifactId>
                 <scope>runtime</scope>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
             <!-- redis -->
