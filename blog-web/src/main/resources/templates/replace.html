@@ -4,9 +4,9 @@
     <meta name="keywords" content="个人博客,杨青个人博客,个人博客模板,杨青"/>
     <meta name="description" content="杨青个人博客，是一个站在web前端设计之路的女程序员个人网站，提供个人博客模板免费资源下载的个人原创网站。"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{css/index.css}" rel="stylesheet">
+    <link th:href="@{/css/index.css}" rel="stylesheet">
     <script th:src="@{https://code.jquery.com/jquery-1.12.4.min.js}"></script>
-    <script th:src="@{js/base.js}"></script>
+    <script th:src="@{/js/base.js}"></script>
 </head>
 
 <footer th:fragment="footer">
@@ -17,7 +17,7 @@
     <div class="logo"><a href="/">Blog >> ggboy-shakalaka</a></div>
     <nav>
         <ul id="starlist">
-            <li><a href="info">慢生活</a></li>
+            <li><a href="/info">慢生活</a></li>
         </ul>
     </nav>
 </header>
@@ -50,7 +50,7 @@
 
 <div class="blogs" th:fragment="blogList">
     <div class="bloglist" th:each="blog:${blogList}">
-        <h2><a  th:href="@{'/info/'+${blog.blog_id}}" title="程序员请放下你的技术情节，与你的同伴一起进步" th:text="${blog.title}"></a></h2>
+        <h2><a  th:href="@{'/info/'+${blog.blogId}}" title="程序员请放下你的技术情节，与你的同伴一起进步" th:text="${blog.title}"></a></h2>
         <p th:text="${blog.synopsis}"></p>
     </div>
 </div>

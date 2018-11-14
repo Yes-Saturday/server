@@ -43,4 +43,8 @@ public class BlogService {
     public Map<String, Object> queryBlogDetail(String id) {
         return blogMapper.selectOne(id);
     }
+
+    public Integer viewPlusOne(String id) {
+        return blogMapper.viewPlusOne(id);
+    }
 }

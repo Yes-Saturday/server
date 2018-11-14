@@ -5,9 +5,11 @@ public class BlogVO {
     private String title;
     private String synopsis;
     private String content;
-    private String viewCount;
-    private String favoriteCount;
-    private String modifyTime;
+    private Integer viewCount;
+    private Integer favoriteCount;
+    private String time;
+
+    private String memo;
 
     public String getBlogId() {
         return blogId;
@@ -41,27 +43,36 @@ public class BlogVO {
         this.content = content;
     }
 
-    public String getViewCount() {
+    public Integer getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(String viewCount) {
+    public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
     }
 
-    public String getFavoriteCount() {
+    public Integer getFavoriteCount() {
         return favoriteCount;
     }
 
-    public void setFavoriteCount(String favoriteCount) {
+    public void setFavoriteCount(Integer favoriteCount) {
         this.favoriteCount = favoriteCount;
     }
 
-    public String getModifyTime() {
-        return modifyTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setModifyTime(String modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setTime(String time) {
+        this.time = time;
     }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
 }

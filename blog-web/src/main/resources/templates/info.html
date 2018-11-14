@@ -10,18 +10,14 @@
             <h3 class="news_title">个人博客，属于我的小世界！</h3>
             <div class="bloginfo">
                 <ul>
-                    <li>
-                        <img class="f_l" src="../img/eye.ico" height="18px" width="18px"/>&nbsp;4567
-                    </li>
-                    <li>
-                        <img class="f_l" src="../img/heart.ico" height="14px" width="14px" style="margin-top: 2px;"/>&nbsp;8888888
-                    </li>
-                    <li>
-                        <img class="f_l" src="../img/time.ico" height="14px" width="14px" style="margin-top: 2px;"/>&nbsp;2018-5-13
-                    </li>
+                    <li><img class="f_l" src="../img/eye.ico" height="18px" width="18px"/><b style="margin-left: 5px" th:text="${blog.viewCount}"></b></li>
+                    <li><img class="f_l" src="../img/heart.ico" height="14px" width="14px" style="margin-top: 2px;"/><b style="margin-left: 5px" th:text="${blog.favoriteCount}"></b></li>
+                    <li><img class="f_l" src="../img/time.ico" height="14px" width="14px" style="margin-top: 2px;"/><b style="margin-left: 5px" th:text="${blog.time}"></b></li>
                 </ul>
             </div>
-            <div class="tags"><a href="/" target="_blank">个人博客</a> &nbsp; <a href="/" target="_blank">小世界</a></div>
+            <div class="tags">
+                <a th:href="@{/list/{id}(id=${c.id})}" target="_blank" th:each="c:${categoryList}" th:text="${c.name}"></a>
+            </div>
             <div class="news_about">
                 <strong>简介</strong>
                 <span th:text="${blog.synopsis}">

@@ -3,6 +3,8 @@ server:
   port: ${system.server.port}
   servlet:
     context-path: ${system.server.path}
+    session:
+      timeout: 60
 
 # 日志配置
 logging:
