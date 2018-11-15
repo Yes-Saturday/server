@@ -26,6 +26,16 @@ public class BlogService {
         }
     }
 
+    public Page<Map<String, Object>> querySimpleList(String orderBy, IPage iPage) {
+        try {
+            Page<Map<String, Object>> page = IPage.startPage(iPage);
+            blogMapper.selectSimpleList(orderBy);
+            return page;
+        } finally {
+            IPage.clearPage();
+        }
+    }
+
     public List<Map<String, Object>> queryTop() {
         var tops = new ArrayList<Map<String, Object>>(3);
         var result = blogMapper.selectTop(BlogOrderBy.Time.desc());

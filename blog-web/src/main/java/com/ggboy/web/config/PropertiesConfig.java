@@ -17,8 +17,11 @@ public class PropertiesConfig {
     private Integer blogListPageSize;
     @Value("${default.blog.list.showPageButtonSize}")
     private Integer blogListShowPageButtonSize;
+    @Value("${constant.config.type.friendLink}")
+    private String friendLinkType;
+
     @PostConstruct
     public void setProperties() {
-        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize);
+        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize, friendLinkType);
     }
 }

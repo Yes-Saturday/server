@@ -14,6 +14,9 @@ public interface BlogMapper {
     @SelectProvider(type = Provider.class, method = "queryBlogList")
     List<Map<String, Object>> selectList(Map<String, Object> params);
 
+    @Select("select blog_id,title from " + table + " order by ${orderBy}")
+    List<Map<String, Object>> selectSimpleList(@Param("orderBy") String orderBy);
+
     @Select("select " + columns + " from " + table + " order by ${orderBy} limit 1")
     Map<String, Object> selectTop(@Param("orderBy") String orderBy);
 

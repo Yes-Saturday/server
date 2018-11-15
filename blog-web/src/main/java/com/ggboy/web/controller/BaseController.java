@@ -7,6 +7,7 @@ import com.ggboy.core.convert.CoreConvert;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.service.BlogService;
 import com.ggboy.core.service.CategoryService;
+import com.ggboy.system.service.SysConstantConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +25,8 @@ public class BaseController {
     private BlogService blogService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SysConstantConfigService sysConstantConfigService;
 
     @GetMapping("/")
     public String index(ModelMap param) {
@@ -33,6 +36,7 @@ public class BaseController {
         var blogList = blogService.queryList(query, new IPage(1, 6));
         param.put("tops", CoreConvert.convertToBlogVOs(tops));
         param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
+        setLeft(param);
         return "index";
     }
 
@@ -56,6 +60,7 @@ public class BaseController {
 
         param.put("blog", blogVO);
         param.put("categoryList", categoryList);
+        setLeft(param);
         return "info";
     }
 
@@ -83,6 +88,13 @@ public class BaseController {
         param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
         param.put("page", new PageVO(blogList.getPageNum(), blogList.getPages()));
         param.put("categoryId", categoryId);
+        setLeft(param);
         return "list";
+    }
+
+    private void setLeft(ModelMap param) {
+        param.put("friendLink", sysConstantConfigService.getFriendLink());
+        param.put("recommendList", CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1))));
+        param.put("favoriteList", CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1))));
     }
 }

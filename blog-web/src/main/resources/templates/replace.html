@@ -30,21 +30,28 @@
         </ul>
     </div>
     <div class="paihang">
-        <h2>点击排行</h2>
+        <h2>受人关注</h2>
         <ul>
-            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+            <li th:each="item:${favoriteList}">
+                <a th:href="@{/info/{blogId}(blogId=${item.blogId})}" target="_blank" th:title="${item.title}"
+                   th:text="${item.title}"></a>
+            </li>
         </ul>
     </div>
     <div class="paihang">
         <h2>站长推荐</h2>
         <ul>
-            <li><a href="#" target="_blank" title="个人博客，属于我的小世界！">个人博客，属于我的小世界！</a></li>
+            <li th:each="item:${recommendList}">
+                <a th:href="@{/info/{blogId}(blogId=${item.blogId})}" target="_blank" th:title="${item.title}"
+                   th:text="${item.title}"></a>
+            </li>
         </ul>
     </div>
     <div class="paihang">
         <h2>友情链接</h2>
         <ul>
-            <li><a href="https://github.com/ggboy-shakalaka" target="_blank">Github -> ggboy-shakalaka</a></li>
+            <li th:each="item:${friendLink}"><a th:href="@{${item.url}}" th:text="${item.name}" target="_blank"></a>
+            </li>
         </ul>
     </div>
 </aside>
@@ -58,16 +65,24 @@
 
 <div class="pagelist" th:fragment="pagelist">
     <a th:if="${page.startArrow > 1 && categoryId == null}" th:href="@{/list/1}">1</a>
-    <a th:if="${page.startArrow > 1 && categoryId != null}" th:href="@{/list/category/{categoryId}/1(categoryId=${categoryId})}">1</a>
-    <a th:if="${page.page > 1 && categoryId == null}" th:href="@{/list/{page}(page=${page.page - 1})}" >Before</a>
-    <a th:if="${page.page > 1 && categoryId != null}" th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.page - 1})}" >Before</a>
+    <a th:if="${page.startArrow > 1 && categoryId != null}"
+       th:href="@{/list/category/{categoryId}/1(categoryId=${categoryId})}">1</a>
+    <a th:if="${page.page > 1 && categoryId == null}" th:href="@{/list/{page}(page=${page.page - 1})}">Before</a>
+    <a th:if="${page.page > 1 && categoryId != null}"
+       th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.page - 1})}">Before</a>
     <span th:each="item:${#numbers.sequence(page.startArrow,page.endArrow)}">
-        <a th:if="${item != page.page && categoryId == null}" th:href="@{/list/{page}(page=${item})}" th:text="${item}"></a>
-        <a th:if="${item != page.page && categoryId != null}" th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${item})}" th:text="${item}"></a>
+        <a th:if="${item != page.page && categoryId == null}" th:href="@{/list/{page}(page=${item})}"
+           th:text="${item}"></a>
+        <a th:if="${item != page.page && categoryId != null}"
+           th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${item})}" th:text="${item}"></a>
         <b th:if="${item == page.page}" th:text="${item}"></b>
     </span>
-    <a th:if="${page.page < page.pages && categoryId == null}" th:href="@{/list/{page}(page=${page.page + 1})}" >Next</a>
-    <a th:if="${page.page < page.pages && categoryId != null}" th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.page + 1})}" >Next</a>
-    <a th:if="${page.endArrow < page.pages && categoryId == null}" th:href="@{/list/{page}(page=${page.pages})}" th:text="${page.pages}"></a>
-    <a th:if="${page.endArrow < page.pages && categoryId != null}" th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.pages})}" th:text="${page.pages}"></a>
+    <a th:if="${page.page < page.pages && categoryId == null}" th:href="@{/list/{page}(page=${page.page + 1})}">Next</a>
+    <a th:if="${page.page < page.pages && categoryId != null}"
+       th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.page + 1})}">Next</a>
+    <a th:if="${page.endArrow < page.pages && categoryId == null}" th:href="@{/list/{page}(page=${page.pages})}"
+       th:text="${page.pages}"></a>
+    <a th:if="${page.endArrow < page.pages && categoryId != null}"
+       th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.pages})}"
+       th:text="${page.pages}"></a>
 </div>
