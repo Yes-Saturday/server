@@ -28,4 +28,7 @@ public interface BlogMapper {
 
     @Update("update " + table + " SET view_count = view_count + 1 WHERE blog_id = #{blogId,jdbcType=VARCHAR}")
     Integer viewPlusOne(@Param("blogId") String blogId);
+
+    @Update("update " + table + " SET favorite_count = favorite_count + 1 WHERE blog_id = #{blogId,jdbcType=VARCHAR}")
+    Integer favoritePlusOne(@Param("blogId") String blogId);
 }

@@ -13,5 +13,9 @@ $(document).keydown(function (event) {
 
     var blogId = pathname.substring(6);
 
-    // TODO ajax
+    $.ajax({
+        url : "/favorite",
+        method : "POST",
+        data : {'blogId':blogId}
+    });
 });

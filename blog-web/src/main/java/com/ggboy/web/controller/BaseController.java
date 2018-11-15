@@ -3,6 +3,7 @@ package com.ggboy.web.controller;
 import com.ggboy.common.constant.PropertiesConstant;
 import com.ggboy.common.domain.IPage;
 import com.ggboy.common.domain.PageVO;
+import com.ggboy.common.utils.CacheUtil;
 import com.ggboy.core.convert.CoreConvert;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.service.BlogService;
@@ -14,8 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +105,7 @@ public class BaseController {
     public String time() {
         return "redirect:/time/1";
     }
+
     @GetMapping("/time/{page}")
     public String time(@PathVariable("page") Integer page, ModelMap param) {
         var timelineList = blogService.queryTimeLine(new IPage(page, PropertiesConstant.getDefaultTimelinePageSize()));
@@ -113,10 +119,48 @@ public class BaseController {
         return "about";
     }
 
+    @PostMapping("/favorite")
+    @ResponseBody
+    public String favorite(HttpServletRequest request, HttpServletResponse response, String blogId) {
+        Cookie cookie = null;
+        for (var item : request.getCookies()) {
+            if (item.getName().equals("favorite_cookie")) {
+                cookie = item;
+                break;
+            }
+        }
+
+        if (cookie == null)
+            cookie = new Cookie("favorite_cookie", "F#>1");
+
+        if (!cookie.getValue().contains(blogId)) {
+            blogService.favoritePlusOne(blogId);
+            cookie.setValue(cookie.getValue() + "#" + blogId);
+        }
+        cookie.setMaxAge(60 * 60 * 24);
+        response.addCookie(cookie);
+        return "OK";
+    }
+
     private void setRight(ModelMap param) {
-        var friendLink = SystemConvert.convertToFriendLinkVOs(sysConstantConfigService.getFriendLink());
-        var recommendList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1)));
-        var favoriteList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1)));
+        var friendLink = CacheUtil.get("friendLink");
+        if (friendLink == null) {
+            friendLink = SystemConvert.convertToFriendLinkVOs(sysConstantConfigService.getFriendLink());
+            CacheUtil.put("friendLink", friendLink, 60 * 10);
+        }
+
+        var recommendList = CacheUtil.get("recommendList");
+        if (recommendList == null) {
+            recommendList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1)));
+            CacheUtil.put("recommendList", recommendList, 60 * 10);
+        }
+
+        var favoriteList = CacheUtil.get("favoriteList");
+        if (favoriteList == null) {
+            favoriteList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1)));
+            CacheUtil.put("favoriteList", favoriteList, 60 * 10);
+        }
+
         param.put("friendLink", friendLink);
         param.put("recommendList", recommendList);
         param.put("favoriteList", favoriteList);

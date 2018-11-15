@@ -74,4 +74,8 @@ public class BlogService {
     public Integer viewPlusOne(String id) {
         return blogMapper.viewPlusOne(id);
     }
+
+    public Integer favoritePlusOne(String id) {
+        return blogMapper.favoritePlusOne(id);
+    }
 }
