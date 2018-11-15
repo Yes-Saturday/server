@@ -3,6 +3,7 @@ package com.ggboy.core.service;
 import com.ggboy.common.domain.IPage;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.mapper.BlogMapper;
+import com.ggboy.core.mapper.LinkBlogMapper;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.Map;
 public class BlogService {
     @Autowired
     private BlogMapper blogMapper;
+    @Autowired
+    private LinkBlogMapper linkBlogMapper;
 
     public Page<Map<String, Object>> queryList(Map<String, Object> params, IPage iPage) {
         try {
@@ -36,6 +39,16 @@ public class BlogService {
         }
     }
 
+    public Page<Map<String, Object>> queryTimeLine(IPage iPage) {
+        try {
+            Page<Map<String, Object>> page = IPage.startPage(iPage);
+            blogMapper.selectTimeLine();
+            return page;
+        } finally {
+            IPage.clearPage();
+        }
+    }
+
     public List<Map<String, Object>> queryTop() {
         var tops = new ArrayList<Map<String, Object>>(3);
         var result = blogMapper.selectTop(BlogOrderBy.Time.desc());
@@ -48,6 +61,10 @@ public class BlogService {
         result.put("memo", "重磅推荐");
         tops.add(result);
         return tops;
+    }
+
+    public List<Map<String, Object>> queryLinkBlog(String id) {
+        return linkBlogMapper.selectLinkBlog(id);
     }
 
     public Map<String, Object> queryBlogDetail(String id) {

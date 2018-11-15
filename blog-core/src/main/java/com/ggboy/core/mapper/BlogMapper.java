@@ -17,6 +17,9 @@ public interface BlogMapper {
     @Select("select blog_id,title from " + table + " order by ${orderBy}")
     List<Map<String, Object>> selectSimpleList(@Param("orderBy") String orderBy);
 
+    @Select("select blog_id,title,DATE_FORMAT(create_time,'%Y-%m-%d') as time from " + table + " order by create_time")
+    List<Map<String, Object>> selectTimeLine();
+
     @Select("select " + columns + " from " + table + " order by ${orderBy} limit 1")
     Map<String, Object> selectTop(@Param("orderBy") String orderBy);
 

@@ -1,6 +1,7 @@
 package com.ggboy.common.domain;
 
 import com.ggboy.common.constant.PropertiesConstant;
+import com.github.pagehelper.Page;
 
 public class PageVO {
     private Integer page;
@@ -17,6 +18,10 @@ public class PageVO {
 
     public PageVO(int page, int pageSize) {
         this(page, pageSize, PropertiesConstant.getDefaultBlogListShowPageButtonSize());
+    }
+
+    public PageVO(Page<?> page) {
+        this(page.getPageNum(), page.getPages(), PropertiesConstant.getDefaultBlogListShowPageButtonSize());
     }
 
     public Integer getPage() {

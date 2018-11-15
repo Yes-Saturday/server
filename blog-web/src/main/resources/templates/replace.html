@@ -18,6 +18,8 @@
     <nav>
         <ul id="starlist">
             <li><a href="/list">文章列表</a></li>
+            <li><a href="/time">时光轴</a></li>
+            <li><a href="/about">关于我</a></li>
             <li><a href="https://github.com/ggboy-shakalaka/simple-blog" target="_blank">网站源码</a></li>
         </ul>
     </nav>
@@ -85,4 +87,15 @@
     <a th:if="${page.endArrow < page.pages && categoryId != null}"
        th:href="@{/list/category/{categoryId}/{page}(categoryId=${categoryId},page=${page.pages})}"
        th:text="${page.pages}"></a>
+</div>
+
+<div class="pagelist" th:fragment="timelinePage">
+    <a th:if="${page.startArrow > 1}" th:href="@{/time/1}">1</a>
+    <a th:if="${page.page > 1}" th:href="@{/time/{page}(page=${page.page - 1})}">Before</a>
+    <span th:each="item:${#numbers.sequence(page.startArrow,page.endArrow)}">
+        <a th:if="${item != page.page}" th:href="@{/time/{page}(page=${item})}" th:text="${item}"></a>
+        <b th:if="${item == page.page}" th:text="${item}"></b>
+    </span>
+    <a th:if="${page.page < page.pages}" th:href="@{/time/{page}(page=${page.page + 1})}">Next</a>
+    <a th:if="${page.endArrow < page.pages}" th:href="@{/time/{page}(page=${page.pages})}" th:text="${page.pages}"></a>
 </div>

@@ -7,6 +7,7 @@ import com.ggboy.core.convert.CoreConvert;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.service.BlogService;
 import com.ggboy.core.service.CategoryService;
+import com.ggboy.system.convert.SystemConvert;
 import com.ggboy.system.service.SysConstantConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,25 +58,27 @@ public class BaseController {
 
         // 获取分类信息
         var categoryList = CoreConvert.convertToCategoryVOs(categoryService.queryCategoryList(blogId));
+        var linkBlogList = CoreConvert.convertToBlogVOs(blogService.queryLinkBlog(blogId));
 
         param.put("blog", blogVO);
         param.put("categoryList", categoryList);
+        param.put("linkList", linkBlogList);
         setRight(param);
         return "info";
     }
 
     @GetMapping("/list")
-    public String list(ModelMap param) {
+    public String list() {
         return "redirect:/list/1";
     }
 
     @GetMapping("/list/{page}")
-    public String listPage(@PathVariable("page") String page, ModelMap param) {
-        return listCategoryPage(null, Integer.valueOf(page), param);
+    public String listPage(@PathVariable("page") Integer page, ModelMap param) {
+        return listCategoryPage(null, page, param);
     }
 
     @GetMapping("/list/category/{categoryId}")
-    public String listCategory(@PathVariable("categoryId") String categoryId, ModelMap param) {
+    public String listCategory(@PathVariable("categoryId") Integer categoryId) {
         return "redirect:/list/category/" + categoryId + "/1";
     }
 
@@ -86,15 +89,36 @@ public class BaseController {
         query.put("orderBy", BlogOrderBy.View.desc());
         var blogList = blogService.queryList(query, new IPage(page, PropertiesConstant.getDefaultBlogListPageSize()));
         param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
-        param.put("page", new PageVO(blogList.getPageNum(), blogList.getPages()));
+        param.put("page", new PageVO(blogList));
         param.put("categoryId", categoryId);
         setRight(param);
         return "list";
     }
 
+
+    @GetMapping("/time")
+    public String time() {
+        return "redirect:/time/1";
+    }
+    @GetMapping("/time/{page}")
+    public String time(@PathVariable("page") Integer page, ModelMap param) {
+        var timelineList = blogService.queryTimeLine(new IPage(page, PropertiesConstant.getDefaultTimelinePageSize()));
+        param.put("timelineList", CoreConvert.convertToBlogVOs(timelineList));
+        param.put("page", new PageVO(timelineList));
+        return "time";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
     private void setRight(ModelMap param) {
-        param.put("friendLink", sysConstantConfigService.getFriendLink());
-        param.put("recommendList", CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1))));
-        param.put("favoriteList", CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1))));
+        var friendLink = SystemConvert.convertToFriendLinkVOs(sysConstantConfigService.getFriendLink());
+        var recommendList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1)));
+        var favoriteList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1)));
+        param.put("friendLink", friendLink);
+        param.put("recommendList", recommendList);
+        param.put("favoriteList", favoriteList);
     }
 }

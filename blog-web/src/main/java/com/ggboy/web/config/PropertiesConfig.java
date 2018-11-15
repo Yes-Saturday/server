@@ -19,9 +19,11 @@ public class PropertiesConfig {
     private Integer blogListShowPageButtonSize;
     @Value("${constant.config.type.friendLink}")
     private String friendLinkType;
+    @Value("${default.timeline.pageSize}")
+    private Integer timelinePageSize;
 
     @PostConstruct
     public void setProperties() {
-        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize, friendLinkType);
+        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize, friendLinkType, timelinePageSize);
     }
 }
