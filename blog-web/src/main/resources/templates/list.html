@@ -5,14 +5,16 @@
 <replace th:replace="replace::header"></replace>
 <div class="box">
     <div class="place" id="pageContents">
-        <a href="/list/111" target="_self" th:style="${categoryId} eq '111'? 'background: #333333;color: #ffffff;'">AAAAA</a>
-        <a href="/list/222" target="_self" th:style="${categoryId} eq '222'? 'background: #333333;color: #ffffff;'">BBBBB</a>
-        <a href="/list/333" target="_self" th:style="${categoryId} eq '333'? 'background: #333333;color: #ffffff;'">CCCCC</a>
-        <a href="/list/444" target="_self" th:style="${categoryId} eq '444'? 'background: #333333;color: #ffffff;'">DDDDD</a>
-        <a href="/list/555" target="_self" th:style="${categoryId} eq '555'? 'background: #333333;color: #ffffff;'">EEEEE</a>
+        <a href="/list" target="_self" th:style="${categoryId} == null? 'background: #333333;color: #ffffff;'">All</a>
+        <a href="/list/category/111" target="_self" th:style="${categoryId} eq '111'? 'background: #333333;color: #ffffff;'">AAAAA</a>
+        <a href="/list/category/222" target="_self" th:style="${categoryId} eq '222'? 'background: #333333;color: #ffffff;'">BBBBB</a>
+        <a href="/list/category/333" target="_self" th:style="${categoryId} eq '333'? 'background: #333333;color: #ffffff;'">CCCCC</a>
+        <a href="/list/category/444" target="_self" th:style="${categoryId} eq '444'? 'background: #333333;color: #ffffff;'">DDDDD</a>
+        <a href="/list/category/555" target="_self" th:style="${categoryId} eq '555'? 'background: #333333;color: #ffffff;'">EEEEE</a>
     </div>
     <replace th:replace="replace::blogList"></replace>
     <replace th:replace="replace::aside"></replace>
+    <replace th:replace="replace::pagelist"></replace>
 </div>
 <replace th:replace="replace::footer"></replace>
 </body>

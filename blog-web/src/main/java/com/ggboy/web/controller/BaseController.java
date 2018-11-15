@@ -1,6 +1,8 @@
 package com.ggboy.web.controller;
 
+import com.ggboy.common.constant.PropertiesConstant;
 import com.ggboy.common.domain.IPage;
+import com.ggboy.common.domain.PageVO;
 import com.ggboy.core.convert.CoreConvert;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.service.BlogService;
@@ -57,9 +59,30 @@ public class BaseController {
         return "info";
     }
 
-    @GetMapping("/list/{categoryId}")
-    public String list(@PathVariable("categoryId") String categoryId, ModelMap param) {
-        param.put("categoryId",categoryId);
+    @GetMapping("/list")
+    public String list(ModelMap param) {
+        return "redirect:/list/1";
+    }
+
+    @GetMapping("/list/{page}")
+    public String listPage(@PathVariable("page") String page, ModelMap param) {
+        return listCategoryPage(null, Integer.valueOf(page), param);
+    }
+
+    @GetMapping("/list/category/{categoryId}")
+    public String listCategory(@PathVariable("categoryId") String categoryId, ModelMap param) {
+        return "redirect:/list/category/" + categoryId + "/1";
+    }
+
+    @GetMapping("/list/category/{categoryId}/{page}")
+    public String listCategoryPage(@PathVariable("categoryId") String categoryId, @PathVariable("page") Integer page, ModelMap param) {
+        var query = new HashMap<String, Object>(2);
+//        query.put("category_id",categoryId);
+        query.put("orderBy", BlogOrderBy.View.desc());
+        var blogList = blogService.queryList(query, new IPage(page, PropertiesConstant.getDefaultBlogListPageSize()));
+        param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
+        param.put("page", new PageVO(blogList.getPageNum(), blogList.getPages()));
+        param.put("categoryId", categoryId);
         return "list";
     }
 }

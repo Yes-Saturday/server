@@ -15,7 +15,7 @@ public class IPage {
             this.currentPage = 0;
             this.isCount = false;
         } else {
-            this.pageSize = PropertiesConstant.getDefaultSmsPageSize();
+            this.pageSize = PropertiesConstant.getDefaultPageSize();
             this.currentPage = currentPage;
             this.isCount = true;
         }
@@ -28,7 +28,7 @@ public class IPage {
             this.isCount = false;
         } else {
             this.currentPage = currentPage;
-            this.pageSize = pageSize != null ? pageSize : PropertiesConstant.getDefaultSmsPageSize();
+            this.pageSize = pageSize != null ? pageSize : PropertiesConstant.getDefaultPageSize();
             this.isCount = true;
         }
     }

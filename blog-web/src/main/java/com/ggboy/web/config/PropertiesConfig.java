@@ -12,9 +12,13 @@ import javax.annotation.PostConstruct;
 public class PropertiesConfig {
 
     @Value("${default.pageSize}")
-    private Integer default_page_size;
+    private Integer pageSize;
+    @Value("${default.blog.list.pageSize}")
+    private Integer blogListPageSize;
+    @Value("${default.blog.list.showPageButtonSize}")
+    private Integer blogListShowPageButtonSize;
     @PostConstruct
     public void setProperties() {
-        PropertiesConstant.init(default_page_size);
+        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize);
     }
 }

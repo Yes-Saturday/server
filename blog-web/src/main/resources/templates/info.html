@@ -16,7 +16,7 @@
                 </ul>
             </div>
             <div class="tags">
-                <a th:href="@{/list/{id}(id=${c.id})}" target="_blank" th:each="c:${categoryList}" th:text="${c.name}"></a>
+                <a th:href="@{/list/category/{id}(id=${c.id})}" target="_blank" th:each="c:${categoryList}" th:text="${c.name}"></a>
             </div>
             <div class="news_about">
                 <strong>简介</strong>
