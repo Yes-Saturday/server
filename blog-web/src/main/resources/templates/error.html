@@ -1,0 +1,16 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<replace th:replace="replace::head"></replace>
+<body>
+<replace th:replace="replace::header"></replace>
+<div class="box">
+  <div class="newsview">
+    <h2>错误页面</h2>
+    <div class="news_infos">
+      <span th:text="'错误信息 -> ' + ${message}"></span>
+    </div>
+  </div>
+</div>
+<replace th:replace="replace::footer"></replace>
+</body>
+</html>

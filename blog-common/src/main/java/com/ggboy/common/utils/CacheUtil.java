@@ -39,6 +39,17 @@ public class CacheUtil {
                 iterator.remove();
         }
     }
+
+    public final static void clear() {
+        var gcTime = cacheMap.get("gc#>time");
+
+        cacheMap.clear();
+
+        if (gcTime != null) {
+            gcTime.setInvalidTime(60 * 10);
+            cacheMap.put("gc#>time", gcTime);
+        }
+    }
 }
 
 class Cache {

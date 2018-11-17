@@ -12,7 +12,7 @@ public class PageVO {
 
     public PageVO(int page, int pages, int showPageLength) {
         this.page = page;
-        this.pages = pages;
+        this.pages = pages > 0 ? pages : 1;
         this.showPageLength = showPageLength;
     }
 

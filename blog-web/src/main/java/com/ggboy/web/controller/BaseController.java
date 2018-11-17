@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +34,14 @@ public class BaseController {
     private CategoryService categoryService;
     @Autowired
     private SysConstantConfigService sysConstantConfigService;
+    public final static String _404_PAGE = "redirect:/error/404.html";
 
     @GetMapping("/")
     public String index(ModelMap param) {
         var query = new HashMap<String, Object>(2);
         query.put("orderBy", BlogOrderBy.View.desc());
         var tops = blogService.queryTop();
-        var blogList = blogService.queryList(query, new IPage(1, 6));
+        var blogList = blogService.queryList(query, new IPage("1", 6));
         param.put("tops", CoreConvert.convertToBlogVOs(tops));
         param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
         setRight(param);
@@ -48,9 +50,9 @@ public class BaseController {
 
     @GetMapping("/info/{blogId}")
     public String info(HttpServletRequest request, @PathVariable("blogId") String blogId, ModelMap param) {
-        var blogVO = CoreConvert.convertToBlogVO(blogService.queryBlogDetail(blogId));
+        var blogVO = CoreConvert.convertToBlogVO(blogService.queryForShow(blogId));
         if (blogVO == null)
-            return "redirect:/error/404.html";
+            return _404_PAGE;
         // session 获取查看列表 如果没有则阅读量+1
         var readList = (List<Object>) request.getSession().getAttribute("readList");
         readList = readList != null ? readList : new ArrayList<>(1);
@@ -78,24 +80,25 @@ public class BaseController {
     }
 
     @GetMapping("/list/{page}")
-    public String listPage(@PathVariable("page") Integer page, ModelMap param) {
+    public String listPage(@PathVariable("page") String page, ModelMap param) {
         return listCategoryPage(null, page, param);
     }
 
     @GetMapping("/list/category/{categoryId}")
-    public String listCategory(@PathVariable("categoryId") Integer categoryId) {
+    public String listCategory(@PathVariable("categoryId") String categoryId) {
         return "redirect:/list/category/" + categoryId + "/1";
     }
 
     @GetMapping("/list/category/{categoryId}/{page}")
-    public String listCategoryPage(@PathVariable("categoryId") String categoryId, @PathVariable("page") Integer page, ModelMap param) {
+    public String listCategoryPage(@PathVariable("categoryId") String categoryId, @PathVariable("page") String page, ModelMap param) {
         var query = new HashMap<String, Object>(2);
-//        query.put("category_id",categoryId);
+        query.put("category_id",categoryId);
         query.put("orderBy", BlogOrderBy.View.desc());
         var blogList = blogService.queryList(query, new IPage(page, PropertiesConstant.getDefaultBlogListPageSize()));
         param.put("blogList", CoreConvert.convertToBlogVOs(blogList));
         param.put("page", new PageVO(blogList));
         param.put("categoryId", categoryId);
+        setBaseCategory(param);
         setRight(param);
         return "list";
     }
@@ -107,7 +110,7 @@ public class BaseController {
     }
 
     @GetMapping("/time/{page}")
-    public String time(@PathVariable("page") Integer page, ModelMap param) {
+    public String time(@PathVariable("page") String page, ModelMap param) {
         var timelineList = blogService.queryTimeLine(new IPage(page, PropertiesConstant.getDefaultTimelinePageSize()));
         param.put("timelineList", CoreConvert.convertToBlogVOs(timelineList));
         param.put("page", new PageVO(timelineList));
@@ -142,27 +145,60 @@ public class BaseController {
         return "OK";
     }
 
+    @GetMapping("/clear")
+    @ResponseBody
+    public String clear() {
+        CacheUtil.clear();
+        return "OK";
+    }
+
+    @GetMapping("/login")
+    public String toLogin() {
+        return "login";
+    }
+
+    @PostMapping("/login/pwd")
+    public String login(HttpServletRequest request, String psd, ModelMap modelMap) throws IOException {
+        if (!sysConstantConfigService.verifyPsd(psd)){
+            modelMap.put("message", "password is wrong!!!");
+            return "error";
+        }
+        request.getSession().setAttribute("isLogin","True");
+        request.getSession().setMaxInactiveInterval(60 * 10);
+        return "redirect:/admin";
+    }
+
     private void setRight(ModelMap param) {
-        var friendLink = CacheUtil.get("friendLink");
-        if (friendLink == null) {
-            friendLink = SystemConvert.convertToFriendLinkVOs(sysConstantConfigService.getFriendLink());
-            CacheUtil.put("friendLink", friendLink, 60 * 10);
+        var friendLinkList = CacheUtil.get("friendLinkList");
+        if (friendLinkList == null) {
+            friendLinkList = SystemConvert.convertToFriendLinkVOs(sysConstantConfigService.getFriendLink());
+            CacheUtil.put("friendLinkList", friendLinkList, 60 * 10);
         }
 
         var recommendList = CacheUtil.get("recommendList");
         if (recommendList == null) {
-            recommendList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage(1)));
+            recommendList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Weight.desc(), new IPage("1")));
             CacheUtil.put("recommendList", recommendList, 60 * 10);
         }
 
         var favoriteList = CacheUtil.get("favoriteList");
         if (favoriteList == null) {
-            favoriteList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage(1)));
+            favoriteList = CoreConvert.convertToBlogVOs(blogService.querySimpleList(BlogOrderBy.Favorite.desc(), new IPage("1")));
             CacheUtil.put("favoriteList", favoriteList, 60 * 10);
         }
 
-        param.put("friendLink", friendLink);
+        param.put("friendLinkList", friendLinkList);
         param.put("recommendList", recommendList);
         param.put("favoriteList", favoriteList);
+    }
+
+    private void setBaseCategory(ModelMap param) {
+        var baseCategoryList = CacheUtil.get("baseCategoryList");
+        if (baseCategoryList == null) {
+            baseCategoryList = CoreConvert.convertToCategoryVOs(categoryService.queryBase());
+            CacheUtil.put("baseCategoryList", baseCategoryList, 60 * 10);
+        }
+
+        param.put("baseCategoryList", baseCategoryList);
     }
 }

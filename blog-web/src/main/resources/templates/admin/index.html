@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<replace th:replace="replace::head"></replace>
+<body>
+<replace th:replace="replace::header"></replace>
+<div class="box">
+    <div class="newsview">
+        <h2>博客管理控制台</h2>
+        <ol>
+            <li style="list-style: decimal;margin-left: 20px">
+                <form method="get" action="/admin/blog">
+                    修改博客详情 ： <input name="blogId" type="text" value="13000000051"/>
+                    <input type="submit"/>
+                </form>
+            </li>
+        </ol>
+    </div>
+</div>
+<replace th:replace="replace::footer"></replace>
+</body>
+</html>

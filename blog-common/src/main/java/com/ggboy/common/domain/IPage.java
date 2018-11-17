@@ -1,36 +1,47 @@
 package com.ggboy.common.domain;
 
+import com.ggboy.common.constant.PropertiesConstant;
+import com.ggboy.common.utils.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.ggboy.common.constant.PropertiesConstant;
 
 public class IPage {
     private Integer currentPage;
     private Integer pageSize;
     private Boolean isCount;
 
-    public IPage(Integer currentPage) {
-        if (currentPage == null) {
+    public IPage(String page) {
+        if (StringUtil.isEmpty(page)) {
             this.pageSize = 0;
             this.currentPage = 0;
             this.isCount = false;
-        } else {
-            this.pageSize = PropertiesConstant.getDefaultPageSize();
-            this.currentPage = currentPage;
-            this.isCount = true;
+            return;
         }
+
+        try {
+            currentPage = Integer.valueOf(page);
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
+        this.pageSize = PropertiesConstant.getDefaultPageSize();
+        this.isCount = true;
     }
 
-    public IPage(Integer currentPage, Integer pageSize) {
-        if (currentPage == null) {
+    public IPage(String page, Integer pageSize) {
+        if (StringUtil.isEmpty(page)) {
             this.currentPage = 0;
             this.pageSize = 0;
             this.isCount = false;
-        } else {
-            this.currentPage = currentPage;
-            this.pageSize = pageSize != null ? pageSize : PropertiesConstant.getDefaultPageSize();
-            this.isCount = true;
+            return;
         }
+
+        try {
+            currentPage = Integer.valueOf(page);
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
+        this.pageSize = pageSize != null && pageSize > 0 ? pageSize : PropertiesConstant.getDefaultPageSize();
+        this.isCount = true;
     }
 
     public <E> Page<E> startPage() {

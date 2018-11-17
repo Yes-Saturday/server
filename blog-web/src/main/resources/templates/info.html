@@ -28,7 +28,7 @@
                 <span th:text="${blog.synopsis}">
                 </span>
             </div>
-            <div class="news_con" th:utext="${blog.content}"></div>
+            <replace th:replace="replace::blogView"></replace>
         </div>
 
         <div class="otherlink">

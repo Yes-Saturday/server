@@ -15,4 +15,8 @@ public class CategoryService {
     public List<Map<String, Object>> queryCategoryList(String blogId) {
         return categoryMapper.selectCategoryByBlogId(blogId);
     }
+
+    public List<Map<String, Object>> queryBase() {
+        return categoryMapper.selectParentCategory();
+    }
 }

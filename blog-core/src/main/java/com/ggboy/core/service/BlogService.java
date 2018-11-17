@@ -67,8 +67,12 @@ public class BlogService {
         return linkBlogMapper.selectLinkBlog(id);
     }
 
-    public Map<String, Object> queryBlogDetail(String id) {
-        return blogMapper.selectOne(id);
+    public Map<String, Object> queryForShow(String id) {
+        return blogMapper.selectForShow(id);
+    }
+
+    public Map<String, Object> queryForUpdate(String id) {
+        return blogMapper.selectForUpdate(id);
     }
 
     public Integer viewPlusOne(String id) {
@@ -77,5 +81,9 @@ public class BlogService {
 
     public Integer favoritePlusOne(String id) {
         return blogMapper.favoritePlusOne(id);
+    }
+
+    public Integer update(Map<String, Object> params) {
+        return blogMapper.update(params);
     }
 }

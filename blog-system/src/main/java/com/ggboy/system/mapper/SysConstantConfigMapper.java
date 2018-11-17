@@ -12,4 +12,7 @@ public interface SysConstantConfigMapper {
 
     @Select("select " + columns + " from " + table + " where status = 'pass' and (invalid_time is null or invalid_time < now()) and type = #{type,jdbcType=VARCHAR}")
     List<String> queryList(@Param("type") String type);
+
+    @Select("select 1 from " + table + " where status = 'pass' and type = 'temp_password' and (invalid_time is null or invalid_time < now()) and value = #{psd,jdbcType=VARCHAR}")
+    Integer verifyPsd(@Param("psd") String psd);
 }

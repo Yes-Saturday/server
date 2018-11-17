@@ -13,4 +13,7 @@ public interface CategoryMapper {
 
     @Select("SELECT " + columns + " from " + c_table + " LEFT JOIN " + cd_table + " on c.category_id = cd.category_id where c.status = 'pass' and cd.blog_id = #{blogId,jdbcType=VARCHAR}")
     List<Map<String, Object>> selectCategoryByBlogId(@Param("blogId") String blogId);
+
+    @Select("SELECT " + columns + " from " + c_table + " where c.status = 'pass' and c.parent_id is null")
+    List<Map<String, Object>> selectParentCategory();
 }

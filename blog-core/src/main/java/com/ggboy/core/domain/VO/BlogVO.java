@@ -1,5 +1,7 @@
 package com.ggboy.core.domain.VO;
 
+import java.math.BigDecimal;
+
 public class BlogVO {
     private String blogId;
     private String title;
@@ -8,6 +10,8 @@ public class BlogVO {
     private Integer viewCount;
     private Integer favoriteCount;
     private String time;
+    private String status;
+    private BigDecimal weight;
 
     private String memo;
 
@@ -75,4 +79,19 @@ public class BlogVO {
         this.memo = memo;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
 }

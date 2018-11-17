@@ -17,7 +17,7 @@ public class WebAppConfig {
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new PurviewInterceptor()).addPathPatterns("/member/**", "/demand/release");
+                registry.addInterceptor(new PurviewInterceptor()).addPathPatterns("/admin/**");
                 registry.addInterceptor(new VerifyInterceptor()).addPathPatterns("/**");
 //                registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
             }

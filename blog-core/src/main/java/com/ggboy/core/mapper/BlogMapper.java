@@ -9,6 +9,7 @@ import java.util.Map;
 public interface BlogMapper {
     String columns = "blog_id,title,synopsis";
     String columns_detail = "title,synopsis,cast(content as char CHARACTER SET utf8) as content,view_count,favorite_count,DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i') as time";
+    String for_update_columns = "blog_id,title,synopsis,cast(content as char CHARACTER SET utf8) as content,status,weight";
     String table = "blog";
 
     @SelectProvider(type = Provider.class, method = "queryBlogList")
@@ -24,11 +25,17 @@ public interface BlogMapper {
     Map<String, Object> selectTop(@Param("orderBy") String orderBy);
 
     @Select("select " + columns_detail + " from " + table + " where status = 'pass' and blog_id = #{blogId, jdbcType=VARCHAR}")
-    Map<String, Object> selectOne(@Param("blogId") String blogId);
+    Map<String, Object> selectForShow(@Param("blogId") String blogId);
 
     @Update("update " + table + " SET view_count = view_count + 1 WHERE blog_id = #{blogId,jdbcType=VARCHAR}")
     Integer viewPlusOne(@Param("blogId") String blogId);
 
     @Update("update " + table + " SET favorite_count = favorite_count + 1 WHERE blog_id = #{blogId,jdbcType=VARCHAR}")
     Integer favoritePlusOne(@Param("blogId") String blogId);
+
+    @Select("select " + for_update_columns + " from " + table + " where blog_id = #{blogId, jdbcType=VARCHAR}")
+    Map<String, Object> selectForUpdate(@Param("blogId") String blogId);
+
+    @UpdateProvider(type = Provider.class, method = "updateBlog")
+    Integer update(Map<String, Object> params);
 }

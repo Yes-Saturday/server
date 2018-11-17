@@ -3,6 +3,7 @@ package com.ggboy.system.service;
 import com.ggboy.common.constant.ErrorCodeConstant;
 import com.ggboy.common.constant.PropertiesConstant;
 import com.ggboy.common.exception.InternalException;
+import com.ggboy.common.utils.PasswordHandler;
 import com.ggboy.common.utils.StringUtil;
 import com.ggboy.system.mapper.SysConstantConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class SysConstantConfigService {
             result.add(map);
         }
         return result;
+    }
+
+    public boolean verifyPsd(String psd) {
+        return sysConstantConfigMapper.verifyPsd(PasswordHandler.getPwd(psd)) != null;
     }
 }

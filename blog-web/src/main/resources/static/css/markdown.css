@@ -1,0 +1,9 @@
+blockquote {
+    border-left: #eee solid 5px;
+    padding-left: 20px;
+}
+
+code {
+    color: #D34B62;
+    background: #F9F2F4;
+}

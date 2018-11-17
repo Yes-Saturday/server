@@ -1,9 +1,13 @@
 package com.ggboy.core.convert;
 
+import com.ggboy.common.utils.StringUtil;
 import com.ggboy.core.domain.VO.BlogVO;
 import com.ggboy.core.domain.VO.CategoryVO;
+import com.ggboy.core.domain.request.UpdateBlogRequest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,8 @@ public class CoreConvert {
         vo.setFavoriteCount((Integer) map.get("favorite_count"));
         vo.setTime((String) map.get("time"));
         vo.setMemo((String) map.get("memo"));
+        vo.setStatus((String) map.get("status"));
+        vo.setWeight((BigDecimal) map.get("weight"));
 
         return vo;
     }
@@ -55,5 +61,20 @@ public class CoreConvert {
             vos.add(convertToCategoryVO(item));
 
         return vos;
+    }
+
+    public final static Map<String, Object> convertToUpdateDO(UpdateBlogRequest req) {
+        if (req == null)
+            return null;
+
+        var doMap = new HashMap<String, Object>();
+        doMap.put("blog_id", req.getId());
+        doMap.put("title", req.getTitle());
+        doMap.put("synopsis", req.getSynopsis());
+        doMap.put("content", StringUtil.toBytes(req.getContent()));
+        doMap.put("status", req.getStatus());
+        doMap.put("weight", req.getWeight());
+
+        return doMap;
     }
 }
