@@ -2,7 +2,11 @@ package com.ggboy.common.utils;
 
 import com.ggboy.common.exception.InternalException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CacheUtil {
@@ -50,6 +54,19 @@ public class CacheUtil {
             cacheMap.put("gc#>time", gcTime);
         }
     }
+
+    public final static Map<String, Object> list() {
+        var result = new HashMap<String, Object>(cacheMap.size());
+        var iterator = cacheMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            var item = iterator.next();
+            result.put(item.getKey(), new HashMap<String, Object>(2) {{
+                put("data", item.getValue().getData());
+                put("countdown", item.getValue().countdown() / 1000 + "s");
+            }});
+        }
+        return result;
+    }
 }
 
 class Cache {
@@ -67,6 +84,10 @@ class Cache {
 
     void setInvalidTime(int expTime) {
         this.invalidTime = System.currentTimeMillis() + expTime * 1000;
+    }
+
+    long countdown() {
+        return invalidTime - System.currentTimeMillis();
     }
 
     Object getData() {

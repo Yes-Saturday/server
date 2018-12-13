@@ -5,14 +5,10 @@ public class FrontEndResponse {
     private String message;
     private Object data;
 
-    public FrontEndResponse(Object data) {
-        this.code = "OK";
-        this.message = "";
+    private FrontEndResponse(String code, String message, Object data) {
+        this.code = code;
+        this.message = message;
         this.data = data;
-    }
-
-    public FrontEndResponse() {
-        this("");
     }
 
     public String getCode() {
@@ -37,5 +33,17 @@ public class FrontEndResponse {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public final static FrontEndResponse success(Object data) {
+        return new FrontEndResponse("OK", "", data);
+    }
+
+    public final static FrontEndResponse success() {
+        return success(null);
+    }
+
+    public final static FrontEndResponse fail(String code, String message) {
+        return new FrontEndResponse(code, message, null);
     }
 }

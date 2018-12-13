@@ -1,6 +1,8 @@
 package com.ggboy.core.service;
 
 import com.ggboy.common.domain.IPage;
+import com.ggboy.core.domain.DO.BlogListDO;
+import com.ggboy.core.domain.query.BlogListQuery;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.mapper.BlogMapper;
 import com.ggboy.core.mapper.LinkBlogMapper;
@@ -19,10 +21,10 @@ public class BlogService {
     @Autowired
     private LinkBlogMapper linkBlogMapper;
 
-    public Page<Map<String, Object>> queryList(Map<String, Object> params, IPage iPage) {
+    public Page<BlogListDO> queryList(BlogListQuery query) {
         try {
-            Page<Map<String, Object>> page = IPage.startPage(iPage);
-            blogMapper.selectList(params);
+            Page<BlogListDO> page = IPage.startPage(query.getiPage());
+            blogMapper.selectList(query);
             return page;
         } finally {
             IPage.clearPage();
@@ -85,5 +87,14 @@ public class BlogService {
 
     public Integer update(Map<String, Object> params) {
         return blogMapper.update(params);
+    }
+
+    private final static IPage getPage(Map<String, Object> params){
+        var iPage = params.get("iPage");
+        if (iPage instanceof String)
+            return new IPage((String) iPage);
+        if (iPage instanceof IPage)
+            return (IPage) iPage;
+        return null;
     }
 }

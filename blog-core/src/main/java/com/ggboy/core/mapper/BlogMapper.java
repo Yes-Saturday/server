@@ -1,5 +1,6 @@
 package com.ggboy.core.mapper;
 
+import com.ggboy.core.domain.query.BlogListQuery;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface BlogMapper {
     String table = "blog";
 
     @SelectProvider(type = Provider.class, method = "queryBlogList")
-    List<Map<String, Object>> selectList(Map<String, Object> params);
+    List<Map<String, Object>> selectList(BlogListQuery query);
 
     @Select("select blog_id,title from " + table + " order by ${orderBy}")
     List<Map<String, Object>> selectSimpleList(@Param("orderBy") String orderBy);

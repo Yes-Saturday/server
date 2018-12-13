@@ -1,9 +1,7 @@
 package com.ggboy.web.exceptionController;
 
-import com.ggboy.common.exception.BaseRuntimeException;
-import com.ggboy.common.exception.BusinessException;
-import com.ggboy.common.exception.InternalException;
-import com.ggboy.common.exception.VerifyException;
+import com.ggboy.common.domain.FrontEndResponse;
+import com.ggboy.common.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,12 +31,15 @@ public class DefaultExceptionController {
 
     @ExceptionHandler({VerifyException.class, BusinessException.class})
     @ResponseStatus(HttpStatus.OK)
-    public ModelAndView businessException(BaseRuntimeException e) {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject("code", e.getCode());
-        modelAndView.addObject("message", e.getMessage());
-        modelAndView.addObject("data", "");
-        return modelAndView;
+    @ResponseBody
+    public FrontEndResponse businessException(BaseRuntimeException e) {
+        return FrontEndResponse.fail(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler({_404Exception.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public void _404(_404Exception e) {
     }
 
     @ExceptionHandler({Exception.class})

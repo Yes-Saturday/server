@@ -1,19 +1,20 @@
-package com.ggboy.core.domain.VO;
+package com.ggboy.core.domain.info;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-public class BlogVO {
+public class BlogInfo {
     private String blogId;
     private String title;
     private String synopsis;
-    private String content;
+    private byte[] synopsisImg;
+    private byte[] content;
     private Integer viewCount;
     private Integer favoriteCount;
     private String time;
     private String status;
     private BigDecimal weight;
-
-    private String memo;
+    private List<CategoryInfo> categories;
 
     public String getBlogId() {
         return blogId;
@@ -39,11 +40,19 @@ public class BlogVO {
         this.synopsis = synopsis;
     }
 
-    public String getContent() {
+    public byte[] getSynopsisImg() {
+        return synopsisImg;
+    }
+
+    public void setSynopsisImg(byte[] synopsisImg) {
+        this.synopsisImg = synopsisImg;
+    }
+
+    public byte[] getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(byte[] content) {
         this.content = content;
     }
 
@@ -71,14 +80,6 @@ public class BlogVO {
         this.time = time;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -93,5 +94,13 @@ public class BlogVO {
 
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
+    }
+
+    public List<CategoryInfo> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<CategoryInfo> categories) {
+        this.categories = categories;
     }
 }

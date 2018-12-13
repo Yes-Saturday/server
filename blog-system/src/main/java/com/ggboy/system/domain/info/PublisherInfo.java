@@ -1,8 +1,9 @@
-package com.ggboy.core.domain.VO;
+package com.ggboy.system.domain.info;
 
-public class CategoryVO {
+public class PublisherInfo {
     private String id;
     private String name;
+    private String status;
 
     public String getId() {
         return id;
@@ -18,5 +19,13 @@ public class CategoryVO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

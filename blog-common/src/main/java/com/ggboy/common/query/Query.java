@@ -2,77 +2,25 @@ package com.ggboy.common.query;
 
 import com.ggboy.common.domain.IPage;
 
-import java.util.Date;
+public abstract class Query {
+    private IPage iPage;
+    private String[] orderBy;
 
-public class Query<T> {
-    private T queryInfo;
-    private Date startCreateTime;
-    private Date endCreateTime;
-    private Date startModifyTime;
-    private Date endModifyTime;
-    private Long startTime;
-    private Long endTime;
+    public abstract String[] getColumns();
 
-    public Query () {
+    public IPage getiPage() {
+        return iPage;
     }
 
-    public Query (T queryInfo) {
-        this.queryInfo = queryInfo;
+    public void setiPage(IPage iPage) {
+        this.iPage = iPage;
     }
 
-    public T getQueryInfo() {
-        return queryInfo;
+    public String[] getOrderBy() {
+        return orderBy;
     }
 
-    public void setQueryInfo(T queryInfo) {
-        this.queryInfo = queryInfo;
-    }
-
-    public Date getStartCreateTime() {
-        return startCreateTime;
-    }
-
-    public void setStartCreateTime(Date startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
-
-    public Date getEndCreateTime() {
-        return endCreateTime;
-    }
-
-    public void setEndCreateTime(Date endCreateTime) {
-        this.endCreateTime = endCreateTime;
-    }
-
-    public Date getStartModifyTime() {
-        return startModifyTime;
-    }
-
-    public void setStartModifyTime(Date startModifyTime) {
-        this.startModifyTime = startModifyTime;
-    }
-
-    public Date getEndModifyTime() {
-        return endModifyTime;
-    }
-
-    public void setEndModifyTime(Date endModifyTime) {
-        this.endModifyTime = endModifyTime;
-    }
-
-    public Long getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
-    }
-
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
+    public void setOrderBy(String[] orderBy) {
+        this.orderBy = orderBy;
     }
 }

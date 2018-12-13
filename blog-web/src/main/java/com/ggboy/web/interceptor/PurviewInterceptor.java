@@ -10,7 +10,7 @@ import java.io.IOException;
 public class PurviewInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        Object isLogin = request.getSession().getAttribute("isLogin");
+        Object isLogin = request.getSession().getAttribute("publisher");
         if (isLogin == null)
             response.sendRedirect("/login");
         return true;

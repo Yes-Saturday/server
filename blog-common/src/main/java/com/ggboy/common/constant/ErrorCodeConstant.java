@@ -10,6 +10,7 @@ public class ErrorCodeConstant {
 	public final static String MEMBER_NOT_EXIST = "MEMBER_NOT_EXIST";
 	public final static String PASSWORD_WRONG = "PASSWORD_WRONG";
 	public final static String NOT_LOGIN = "NOT_LOGIN";
+	public final static String PUBLIC_KEY_INVALID = "PUBLIC_KEY_INVALID";
 
 	private ErrorCodeConstant() {
 	}

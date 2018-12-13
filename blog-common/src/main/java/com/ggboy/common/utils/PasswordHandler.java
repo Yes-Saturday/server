@@ -2,6 +2,7 @@ package com.ggboy.common.utils;
 
 public class PasswordHandler {
     public final static String getPwd(byte[] pwd) {
+        System.out.println(new String(pwd));
         String pwdHex = StringUtil.toHexString(pwd);
         String salt = MD5Util.digest(pwd);
         return MD5Util.digest(pwdHex + salt);
