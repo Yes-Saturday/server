@@ -15,4 +15,8 @@ public class SequenceIdConvert {
     public final static String convert(String flag, Long number) {
         return convert(flag, number, null);
     }
+
+    public final static String convert(Long number) {
+        return convert(null, number, null);
+    }
 }

@@ -22,7 +22,7 @@ public class SequenceService {
         Map<String, Object> result = sequenceMapper.lockSequenceName(sequenceName.toString());
         if (result == null) {
             sequenceMapper.insert(sequenceName.toString());
-            sequenceMapper.lockSequenceName(sequenceName.toString());
+            result = sequenceMapper.lockSequenceName(sequenceName.toString());
         }
         sequenceMapper.update(sequenceName.toString());
         return (Long) result.get("value") + (Integer) result.get("inc");

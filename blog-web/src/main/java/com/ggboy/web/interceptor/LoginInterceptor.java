@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class PurviewInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        Object isLogin = request.getSession().getAttribute("publisher");
-        if (isLogin == null)
+        var session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null)
             response.sendRedirect("/login");
         return true;
     }

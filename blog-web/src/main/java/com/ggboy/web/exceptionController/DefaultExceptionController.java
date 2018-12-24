@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -40,6 +41,13 @@ public class DefaultExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public void _404(_404Exception e) {
+    }
+
+    @ExceptionHandler({MaxUploadSizeExceededException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public String MaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return system_error;
     }
 
     @ExceptionHandler({Exception.class})

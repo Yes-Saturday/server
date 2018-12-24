@@ -9,9 +9,10 @@ public class PropertiesConstant {
     private static Integer DEFAULT_BLOG_LIST_SHOW_PAGE_BUTTON_SIZE;
     private static String FRIEND_LINK_TYPE;
     private static Integer DEFAULT_TIMELINE_PAGE_SIZE;
+    private static String DEFAULT_FILE_PATH_IMG;
 
     public static void init(Integer pageSize, Integer blogListPageSize, Integer blogListShowPageButtonSize, String friendLinkType,
-                            Integer timelinePageSize) {
+                            Integer timelinePageSize, String filePathImg) {
         if (init)
             throw new InternalException(ErrorCodeConstant.SYSTEM_ERROR, "配置文件已被初始化");
         init = true;
@@ -20,6 +21,7 @@ public class PropertiesConstant {
         DEFAULT_BLOG_LIST_SHOW_PAGE_BUTTON_SIZE = blogListShowPageButtonSize;
         FRIEND_LINK_TYPE = friendLinkType;
         DEFAULT_TIMELINE_PAGE_SIZE = timelinePageSize;
+        DEFAULT_FILE_PATH_IMG = filePathImg;
     }
 
     public static Integer getDefaultPageSize(){
@@ -40,5 +42,9 @@ public class PropertiesConstant {
 
     public static Integer getDefaultTimelinePageSize() {
         return DEFAULT_TIMELINE_PAGE_SIZE;
+    }
+
+    public static String getDefaultFilePathImg() {
+        return DEFAULT_FILE_PATH_IMG;
     }
 }

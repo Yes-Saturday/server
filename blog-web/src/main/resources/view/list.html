@@ -1,0 +1,25 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>abcdefg</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/base.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="a1">
+	<div class="b1">
+		<ul class="d1">
+			<li>
+				<a href="/category"><- #(categoryName)</a>
+			</li>
+			#for(blog : blogList)
+			<li>
+				<span>#(blog.time)</span>
+				<a href="/info/#(blog.id)">#(blog.title)</a>
+			</li>
+			#end
+		</ul>
+	</div>
+</div>
+</body>
+</html>

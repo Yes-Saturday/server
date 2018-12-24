@@ -1,19 +1,16 @@
 package com.ggboy.core.domain.DO;
 
 public class BlogListDO {
-    private String blogId;
+    private String id;
     private String title;
-    private String synopsis;
-    private String synopsisImg;
-    private String publisherId;
-    private String publisherName;
+    private String time;
 
-    public String getBlogId() {
-        return blogId;
+    public String getId() {
+        return id;
     }
 
-    public void setBlogId(String blogId) {
-        this.blogId = blogId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -24,35 +21,11 @@ public class BlogListDO {
         this.title = title;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public String getTime() {
+        return time;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
-    }
-
-    public String getSynopsisImg() {
-        return synopsisImg;
-    }
-
-    public void setSynopsisImg(String synopsisImg) {
-        this.synopsisImg = synopsisImg;
-    }
-
-    public String getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(String publisherId) {
-        this.publisherId = publisherId;
-    }
-
-    public String getPublisherName() {
-        return publisherName;
-    }
-
-    public void setPublisherName(String publisherName) {
-        this.publisherName = publisherName;
+    public void setTime(String time) {
+        this.time = time;
     }
 }

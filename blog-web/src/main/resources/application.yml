@@ -14,17 +14,11 @@ logging:
     org.spring.springboot.dao: debug
 # Spring配置
 spring:
-  # 模板引擎
-  thymeleaf:
-    mode: HTML
-    encoding: utf-8
-    prefix: classpath:/templates/
-    suffix: .html
-    # 禁用缓存
-    cache: false
+  jackson:
+    default-property-inclusion: non_empty
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     druid:
       url: ${datasource.url}
       username: ${datasource.username}
@@ -55,6 +49,10 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 mybatis:
   configuration:

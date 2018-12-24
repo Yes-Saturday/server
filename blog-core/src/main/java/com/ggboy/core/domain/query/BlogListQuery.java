@@ -5,6 +5,7 @@ import com.ggboy.common.query.Query;
 public class BlogListQuery extends Query {
 
     private String categoryId;
+    private String status;
 
     public String getCategoryId() {
         return categoryId;
@@ -14,15 +15,20 @@ public class BlogListQuery extends Query {
         this.categoryId = categoryId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String[] getColumns() {
         return new String[] {
-                "blog.blog_id as blogId",
+                "blog.blog_id as id",
                 "blog.title as title",
-                "blog.synopsis as synopsis",
-                "blog.synopsis_img as synopsisImg",
-                "blog_publisher.publisher_id as publisherId",
-                "blog_publisher.name as publisherName"
+                "DATE_FORMAT(create_time,'%Y-%m-%d') as time"
         };
     }
 }

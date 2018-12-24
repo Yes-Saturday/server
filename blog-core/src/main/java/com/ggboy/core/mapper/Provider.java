@@ -1,6 +1,7 @@
 package com.ggboy.core.mapper;
 
 import com.ggboy.core.domain.query.BlogListQuery;
+import com.ggboy.core.domain.query.BlogShowQuery;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
@@ -10,20 +11,24 @@ public class Provider {
         return new SQL() {{
             SELECT_DISTINCT(query.getColumns());
             FROM("blog");
-            INNER_JOIN("blog_publisher ON blog_publisher.publisher_id = blog.publisher_id ");
-            if (query.getCategoryId() != null) {
-                INNER_JOIN("category_detail on category_detail.blog_id = blog.blog_id");
-                INNER_JOIN("category ON category.category_id = category_detail.category_id ");
-                WHERE("category.category_id = #{categoryId,jdbcType=VARCHAR}");
-                OR();
-                WHERE("category.parent_id = #{categoryId,jdbcType=VARCHAR}");
-            }
-            WHERE("blog.status = 'pass'");
+            if (query.getCategoryId() != null)
+                WHERE("blog.category_id = #{categoryId,jdbcType=VARCHAR}");
+            if (query.getStatus() != null)
+                WHERE("blog.status = #{status,jdbcType=VARCHAR}");
 
             String[] orderBy = query.getOrderBy();
             if (orderBy != null)
                 for (String item : orderBy)
                     ORDER_BY(item);
+        }}.toString();
+    }
+
+    public String queryForShow(final BlogShowQuery query) {
+        return new SQL() {{
+            SELECT_DISTINCT(query.getColumns());
+            FROM("blog");
+            WHERE("blog.blog_id = #{id,jdbcType=VARCHAR}");
+            WHERE("blog.status = 'pass'");
         }}.toString();
     }
 

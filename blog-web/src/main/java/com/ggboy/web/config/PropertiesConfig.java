@@ -21,9 +21,15 @@ public class PropertiesConfig {
     private String friendLinkType;
     @Value("${default.timeline.pageSize}")
     private Integer timelinePageSize;
+    @Value("${default.filepath.img}")
+    private String filePathImg;
+    @Value("${default.file.maxSize}")
+    private int fileMaxSize;
 
     @PostConstruct
     public void setProperties() {
-        PropertiesConstant.init(pageSize, blogListPageSize, blogListShowPageButtonSize, friendLinkType, timelinePageSize);
+        PropertiesConstant.init(pageSize, blogListPageSize,
+                blogListShowPageButtonSize, friendLinkType,
+                timelinePageSize, filePathImg);
     }
 }

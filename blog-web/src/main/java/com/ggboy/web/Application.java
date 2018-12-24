@@ -1,13 +1,14 @@
-package com.ggboy;
+package com.ggboy.web;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.ggboy.*")
 @ServletComponentScan
 @MapperScan("com.ggboy.*.mapper")
 @PropertySource("classpath:config/system.properties")

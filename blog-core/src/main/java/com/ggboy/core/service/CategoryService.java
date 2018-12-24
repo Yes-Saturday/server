@@ -12,11 +12,7 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    public List<Map<String, Object>> queryCategoryList(String blogId) {
-        return categoryMapper.selectCategoryByBlogId(blogId);
-    }
-
-    public List<Map<String, Object>> queryBase() {
+    public List<Map<String, Object>> queryList() {
         return categoryMapper.selectParentCategory();
     }
 }

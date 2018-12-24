@@ -2,8 +2,8 @@ package com.ggboy.core.enums;
 
 public enum BlogOrderBy {
     Time("最后修改时间", "blog.modify_time"),
+    CreateTime("创建时间", "blog.create_time"),
     View("阅读量", "blog.view_count"),
-    Favorite("收藏量", "blog.favorite_count"),
     Weight("权重值", "blog.weight"),
     ;
 

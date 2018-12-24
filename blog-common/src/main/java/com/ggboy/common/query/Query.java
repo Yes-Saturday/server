@@ -8,11 +8,11 @@ public abstract class Query {
 
     public abstract String[] getColumns();
 
-    public IPage getiPage() {
+    public IPage getIPage() {
         return iPage;
     }
 
-    public void setiPage(IPage iPage) {
+    public void setIPage(IPage iPage) {
         this.iPage = iPage;
     }
 
@@ -20,7 +20,7 @@ public abstract class Query {
         return orderBy;
     }
 
-    public void setOrderBy(String[] orderBy) {
+    public void setOrderBy(String... orderBy) {
         this.orderBy = orderBy;
     }
 }

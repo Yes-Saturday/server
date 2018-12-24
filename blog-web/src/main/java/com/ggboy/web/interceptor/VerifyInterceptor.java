@@ -4,6 +4,7 @@ import com.ggboy.common.annotation.*;
 import com.ggboy.common.constant.ErrorCodeConstant;
 import com.ggboy.common.exception.VerifyException;
 import com.ggboy.common.utils.StringUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

@@ -1,16 +1,16 @@
 package com.ggboy.core.service;
 
 import com.ggboy.common.domain.IPage;
+import com.ggboy.core.domain.DO.BlogInfoDO;
 import com.ggboy.core.domain.DO.BlogListDO;
 import com.ggboy.core.domain.query.BlogListQuery;
-import com.ggboy.core.enums.BlogOrderBy;
+import com.ggboy.core.domain.query.BlogShowQuery;
 import com.ggboy.core.mapper.BlogMapper;
 import com.ggboy.core.mapper.LinkBlogMapper;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class BlogService {
 
     public Page<BlogListDO> queryList(BlogListQuery query) {
         try {
-            Page<BlogListDO> page = IPage.startPage(query.getiPage());
+            Page<BlogListDO> page = IPage.startPage(query.getIPage());
             blogMapper.selectList(query);
             return page;
         } finally {
@@ -31,58 +31,12 @@ public class BlogService {
         }
     }
 
-    public Page<Map<String, Object>> querySimpleList(String orderBy, IPage iPage) {
-        try {
-            Page<Map<String, Object>> page = IPage.startPage(iPage);
-            blogMapper.selectSimpleList(orderBy);
-            return page;
-        } finally {
-            IPage.clearPage();
-        }
-    }
-
-    public Page<Map<String, Object>> queryTimeLine(IPage iPage) {
-        try {
-            Page<Map<String, Object>> page = IPage.startPage(iPage);
-            blogMapper.selectTimeLine();
-            return page;
-        } finally {
-            IPage.clearPage();
-        }
-    }
-
-    public List<Map<String, Object>> queryTop() {
-        var tops = new ArrayList<Map<String, Object>>(3);
-        var result = blogMapper.selectTop(BlogOrderBy.Time.desc());
-        result.put("memo", "最新发布");
-        tops.add(result);
-        result = blogMapper.selectTop(BlogOrderBy.View.desc());
-        result.put("memo", "最受欢迎");
-        tops.add(result);
-        result = blogMapper.selectTop(BlogOrderBy.Weight.desc());
-        result.put("memo", "重磅推荐");
-        tops.add(result);
-        return tops;
+    public BlogInfoDO queryForShow(String id) {
+        return blogMapper.selectForShow(new BlogShowQuery(id));
     }
 
     public List<Map<String, Object>> queryLinkBlog(String id) {
         return linkBlogMapper.selectLinkBlog(id);
-    }
-
-    public Map<String, Object> queryForShow(String id) {
-        return blogMapper.selectForShow(id);
-    }
-
-    public Map<String, Object> queryForUpdate(String id) {
-        return blogMapper.selectForUpdate(id);
-    }
-
-    public Integer viewPlusOne(String id) {
-        return blogMapper.viewPlusOne(id);
-    }
-
-    public Integer favoritePlusOne(String id) {
-        return blogMapper.favoritePlusOne(id);
     }
 
     public Integer update(Map<String, Object> params) {

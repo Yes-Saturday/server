@@ -30,7 +30,7 @@ public class LoginController {
     @Autowired
     private PublisherService publisherService;
 
-    @PostMapping("/login")
+    @PostMapping("/doLogin")
     public FrontEndResponse login(@Verify LoginRequest loginRequest, HttpServletRequest request) {
         byte[] privateKey = CacheUtil.get(SystemConstant.PRIVATE_KEY_ALIAS);
         if (privateKey == null) {
@@ -55,7 +55,7 @@ public class LoginController {
         return FrontEndResponse.success(publisherInfo);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/doLogout")
     public FrontEndResponse logout(HttpServletRequest request) {
         var session = request.getSession(false);
         if (session != null)
