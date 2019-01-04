@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
-@WebFilter
+//@Component
+//@WebFilter
 public class DevFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {

@@ -2,6 +2,7 @@ package com.ggboy.web.config;
 
 import com.ggboy.web.converter.DateConverter;
 import com.ggboy.web.converter.EnumConverterFactory;
+import com.ggboy.web.interceptor.BaseInterceptor;
 import com.ggboy.web.interceptor.LoginInterceptor;
 import com.ggboy.web.interceptor.VerifyInterceptor;
 import com.jfinal.template.ext.spring.JFinalViewResolver;
@@ -20,9 +21,9 @@ public class WebAppConfig {
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
                 registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/console/**");
                 registry.addInterceptor(new VerifyInterceptor()).addPathPatterns("/**");
-//                registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
             }
 
             public void addFormatters(FormatterRegistry registry) {
@@ -32,7 +33,6 @@ public class WebAppConfig {
 
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-                registry.addResourceHandler("/image/**").addResourceLocations("file:///media/app/blog/image/");
             }
         };
     }

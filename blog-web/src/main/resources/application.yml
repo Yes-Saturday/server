@@ -5,6 +5,8 @@ server:
     context-path: ${system.server.path}
     session:
       timeout: 60
+  tomcat:
+    protocol-header: x-forwarded-proto
 
 # 日志配置
 logging:
@@ -17,38 +19,10 @@ spring:
   jackson:
     default-property-inclusion: non_empty
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    druid:
-      url: ${datasource.url}
-      username: ${datasource.username}
-      password: ${datasource.password}
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      # 配置获取连接等待超时的时间
-      max-wait: 60000
-      # 打开PSCache，并且指定每个连接上PSCache的大小
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      timeBetweenEvictionRunsMillis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /monitor/druid/*
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
   servlet:
     multipart:
       max-file-size: 10MB

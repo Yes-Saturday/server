@@ -18,14 +18,14 @@ import java.util.Map;
 
 @ControllerAdvice
 public class DefaultExceptionController {
-    private final String system_error = "{'code':'SYSTEM_ERROR','message':'系统内部错误','data':''}";
+    private final FrontEndResponse system_error = FrontEndResponse.fail("SYSTEM_ERROR", "系统内部错误");;
 
     private final static Logger log = LoggerFactory.getLogger(DefaultExceptionController.class);
 
     @ExceptionHandler({InternalException.class})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String internalException(InternalException e) {
+    public FrontEndResponse internalException(InternalException e) {
         log.error(e.getDetailMessage(), e);
         return system_error;
     }
@@ -46,14 +46,14 @@ public class DefaultExceptionController {
     @ExceptionHandler({MaxUploadSizeExceededException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String MaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+    public FrontEndResponse MaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return system_error;
     }
 
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String exception(Exception e) {
+    public FrontEndResponse exception(Exception e) {
         log.error("unknown", e);
         return system_error;
     }

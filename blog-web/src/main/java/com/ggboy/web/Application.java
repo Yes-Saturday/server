@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication(scanBasePackages = "com.ggboy.*")
+@SpringBootApplication(scanBasePackages = "com.ggboy.**")
 @ServletComponentScan
 @MapperScan("com.ggboy.*.mapper")
 @PropertySource("classpath:config/system.properties")

@@ -3,6 +3,7 @@ package com.ggboy.core.domain.DO;
 import java.math.BigDecimal;
 
 public class BlogInfoDO {
+    private String id;
     private String title;
     private String headImg;
     private String content;
@@ -11,6 +12,14 @@ public class BlogInfoDO {
     private String createTime;
     private String modifyTime;
     private BigDecimal weight;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

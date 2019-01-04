@@ -1,17 +1,9 @@
 package com.ggboy.core.domain.query;
 
-import com.ggboy.common.query.Query;
-
-public class BlogShowQuery extends Query {
-
-    private String id;
+public class BlogShowQuery extends BaseBlogQuery {
 
     public BlogShowQuery (String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
+        super(id, "pass");
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.ggboy.common.convert.SequenceIdConvert;
 import com.ggboy.common.domain.FrontEndResponse;
 import com.ggboy.common.exception._404Exception;
 import com.ggboy.common.utils.IoUtil;
+import com.ggboy.common.utils.StringUtil;
 import com.ggboy.system.enums.SequenceName;
 import com.ggboy.system.service.SequenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ public class FileController {
             if (file == null)
                 return FrontEndResponse.fail("error", "file is not exits");
             String fileName = upload(file, PropertiesConstant.getDefaultFilePathImg());
-            return FrontEndResponse.success(request.getScheme() + "://" + request.getServerName() + "/image/" + fileName);
+            var scheme = request.getHeader("x-forwarded-scheme");
+            scheme = StringUtil.isEmpty(scheme) ? request.getScheme() : scheme;
+            return FrontEndResponse.success(scheme + "://" + request.getServerName() + "/images/" + fileName);
         } catch (IOException e) {
             return FrontEndResponse.fail("error", e.getMessage());
         }

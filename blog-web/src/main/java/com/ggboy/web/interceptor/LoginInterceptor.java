@@ -13,7 +13,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         var session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null)
             response.sendRedirect("/login");
-        return true;
+        else
+            return true;
+        return false;
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {

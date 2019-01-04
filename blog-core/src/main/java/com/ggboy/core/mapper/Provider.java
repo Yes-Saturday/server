@@ -1,7 +1,9 @@
 package com.ggboy.core.mapper;
 
+import com.ggboy.core.domain.query.BaseBlogQuery;
 import com.ggboy.core.domain.query.BlogListQuery;
 import com.ggboy.core.domain.query.BlogShowQuery;
+import com.ggboy.core.domain.query.BlogUpdateDbreq;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.Map;
@@ -23,30 +25,31 @@ public class Provider {
         }}.toString();
     }
 
-    public String queryForShow(final BlogShowQuery query) {
+    public String queryBlogByIdAndStatus(final BaseBlogQuery query) {
         return new SQL() {{
             SELECT_DISTINCT(query.getColumns());
             FROM("blog");
             WHERE("blog.blog_id = #{id,jdbcType=VARCHAR}");
-            WHERE("blog.status = 'pass'");
+            if (query.getStatus() != null)
+                WHERE("blog.status = #{status,jdbcType=VARCHAR}");
         }}.toString();
     }
 
-    public String updateBlog(final Map<String, Object> params) {
+    public String updateBlog(final BlogUpdateDbreq dbreq) {
         return new SQL() {{
             UPDATE("blog");
-            if (params.get("title") != null)
+            if (dbreq.getTitle() != null)
                 SET("blog.title = #{title}");
-            if (params.get("synopsis") != null)
-                SET("blog.synopsis = #{synopsis}");
-            if (params.get("content") != null)
+            if (dbreq.getContent() != null)
                 SET("blog.content = #{content}");
-            if (params.get("status") != null)
+            if (dbreq.getHeadImg() != null)
+                SET("blog.head_img = #{headImg}");
+            if (dbreq.getStatus() != null)
                 SET("blog.status = #{status}");
-            if (params.get("weight") != null)
+            if (dbreq.getWeight() != null)
                 SET("blog.weight = #{weight}");
             SET("blog.modify_time = now()");
-            WHERE("blog.blog_id = #{blog_id}");
+            WHERE("blog.blog_id = #{id}");
         }}.toString();
     }
 }

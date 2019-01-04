@@ -1,5 +1,6 @@
 package com.ggboy.web.controller;
 
+import com.ggboy.common.exception._404Exception;
 import com.ggboy.core.domain.query.BlogListQuery;
 import com.ggboy.core.enums.BlogOrderBy;
 import com.ggboy.core.service.BlogService;
@@ -46,6 +47,8 @@ public class CenterController {
     @GetMapping("/info/{blogId}")
     public String info(@PathVariable("blogId") String blogId, ModelMap modelMap) {
         var blogInfo = blogService.queryForShow(blogId);
+        if (blogInfo == null)
+            throw new _404Exception();
         modelMap.put("blog", blogInfo);
         return "info";
     }
@@ -55,11 +58,6 @@ public class CenterController {
         var list = blogService.queryList(new BlogListQuery(){{setOrderBy(BlogOrderBy.CreateTime.desc());}});
         modelMap.put("blogList", list);
         return "times";
-    }
-
-    @GetMapping("/console")
-    public String console() {
-        return "console";
     }
 
     @GetMapping("/login")

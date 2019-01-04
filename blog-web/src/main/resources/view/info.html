@@ -8,8 +8,8 @@
 <body>
 <div class="a1">
     <div style="width: 100%;max-height: 500px;overflow: hidden;">
-        #if(blog.headImg != null)
-        <img src="#(blog.headImg)" alt="error" width="100%"/>
+        #if(blog.headImg)
+        <img src="#(blog.headImg)" width="100%"/>
         #end
     </div>
     <div class="b1">
@@ -17,15 +17,13 @@
         <p class="c2">
             <span>#(blog.createTime)</span>
         </p>
-        <div id="content">#(blog.content)</div>
+        <div id="content" val="#escape(blog.content)"></div>
         <link href="/static/css/md.css" rel="stylesheet"/>
-        <script src="/static/js/showdown.min.js" type="text/javascript"></script>
+        <link href="/static/css/code/tomorrow-night.css" rel="stylesheet"/>
+        <script src="/static/js/md.js" type="text/javascript"></script>
         <script>
             window.onload = function () {
-                var text = document.getElementById("content").innerHTML;
-                text = text.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return {'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'}[t];});
-                var html = new showdown.Converter().makeHtml(text);
-                document.getElementById("content").innerHTML = html;
+                md.parseAuto(document.getElementById("content").getAttribute("val"), document.getElementById("content"));
             }
         </script>
     </div>
