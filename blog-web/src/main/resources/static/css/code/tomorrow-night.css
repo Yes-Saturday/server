@@ -108,6 +108,7 @@ code li:hover,.selected {
   min-width: 24px;
   text-align: right;
   padding-right: 8px;
+  color: darkslategray;
 }
 
 .hljs-ln-num::before {
