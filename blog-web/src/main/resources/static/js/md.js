@@ -14,6 +14,7 @@ var md = {
             langPrefix: 'hljs lang-',
             breaks: true,
             headerIds: false,
+            xhtml: true,
             highlight: function (code ,event) {
                 return hljs.highlightAuto(code, [event]).value;
             }
