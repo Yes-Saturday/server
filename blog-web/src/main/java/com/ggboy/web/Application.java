@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ServletComponentScan
 @MapperScan("com.ggboy.*.mapper")
 @PropertySource("classpath:config/system.properties")
-@PropertySource("classpath:cong/security.properties")
+@PropertySource("classpath:config/security.properties")
 @EnableTransactionManagement
 public class Application {
 	public static void main(String[] args) {
