@@ -3,6 +3,7 @@ package com.ggboy.web.domain.request;
 import com.ggboy.common.annotation.MaxLength;
 import com.ggboy.common.annotation.Name;
 import com.ggboy.common.annotation.NotNull;
+import com.ggboy.common.utils.StringUtil;
 
 public class CreateBlogRequest {
     @NotNull
@@ -17,6 +18,8 @@ public class CreateBlogRequest {
     private String content;
 
     public String getTitle() {
+        if (StringUtil.isEmpty(title))
+            return null;
         return title;
     }
 
@@ -25,6 +28,8 @@ public class CreateBlogRequest {
     }
 
     public String getHeadImg() {
+        if (StringUtil.isEmpty(headImg))
+            return null;
         return headImg;
     }
 
@@ -33,6 +38,8 @@ public class CreateBlogRequest {
     }
 
     public String getContent() {
+        if (StringUtil.isEmpty(content))
+            return null;
         return content;
     }
 

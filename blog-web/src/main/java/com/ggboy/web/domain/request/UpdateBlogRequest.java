@@ -4,6 +4,7 @@ import com.ggboy.common.annotation.Length;
 import com.ggboy.common.annotation.MaxLength;
 import com.ggboy.common.annotation.Name;
 import com.ggboy.common.annotation.NotNull;
+import com.ggboy.common.utils.StringUtil;
 
 public class UpdateBlogRequest {
     @NotNull
@@ -22,6 +23,8 @@ public class UpdateBlogRequest {
     private String content;
 
     public String getId() {
+        if (StringUtil.isEmpty(id))
+            return null;
         return id;
     }
 
@@ -30,6 +33,8 @@ public class UpdateBlogRequest {
     }
 
     public String getTitle() {
+        if (StringUtil.isEmpty(title))
+            return null;
         return title;
     }
 
@@ -38,6 +43,8 @@ public class UpdateBlogRequest {
     }
 
     public String getHeadImg() {
+        if (StringUtil.isEmpty(headImg))
+            return null;
         return headImg;
     }
 
@@ -46,6 +53,8 @@ public class UpdateBlogRequest {
     }
 
     public String getContent() {
+        if (StringUtil.isEmpty(content))
+            return null;
         return content;
     }
 
