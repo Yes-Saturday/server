@@ -55,6 +55,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>simple-blog-${project.version}</finalName>
+        <finalName>simple-blog</finalName>
     </build>
 </project>
