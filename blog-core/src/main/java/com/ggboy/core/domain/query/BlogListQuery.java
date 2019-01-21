@@ -5,6 +5,7 @@ import com.ggboy.common.query.Query;
 public class BlogListQuery extends Query {
 
     private String categoryId;
+    private String tag;
     private String status;
 
     public String getCategoryId() {
@@ -21,6 +22,14 @@ public class BlogListQuery extends Query {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     @Override

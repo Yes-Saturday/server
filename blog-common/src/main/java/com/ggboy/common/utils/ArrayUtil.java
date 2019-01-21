@@ -1,6 +1,10 @@
 package com.ggboy.common.utils;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.function.Predicate;
 
 public class ArrayUtil {
     public static boolean isEmpty(Object[] data) {
@@ -57,5 +61,13 @@ public class ArrayUtil {
 
     public final static byte[] subArray(byte[] data, int start, int end) {
         return Arrays.copyOfRange(data, start, end);
+    }
+
+    public final static <T> T[] removeRepeat(T[] data, Predicate<T> removeTerm) {
+        var list = new ArrayList<T>();
+        for (var item : data)
+            if (!removeTerm.test(item) && !list.contains(item))
+                list.add(item);
+        return list.toArray((T[]) Array.newInstance(data.getClass().getComponentType(), list.size()));
     }
 }

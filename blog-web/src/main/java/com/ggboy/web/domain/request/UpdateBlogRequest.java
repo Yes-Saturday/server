@@ -6,6 +6,8 @@ import com.ggboy.common.annotation.Name;
 import com.ggboy.common.annotation.NotNull;
 import com.ggboy.common.utils.StringUtil;
 
+import java.util.List;
+
 public class UpdateBlogRequest {
     @NotNull
     @Length(11)
@@ -21,6 +23,9 @@ public class UpdateBlogRequest {
     @NotNull
     @Name("内容")
     private String content;
+    @Name("标签")
+    @MaxLength(32)
+    private String[] tags;
 
     public String getId() {
         if (StringUtil.isEmpty(id))
@@ -60,5 +65,13 @@ public class UpdateBlogRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }

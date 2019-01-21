@@ -6,6 +6,7 @@ public class BlogInfoDO {
     private String id;
     private String title;
     private String headImg;
+    private String tags;
     private String content;
     private String viewCount;
     private String categoryId;
@@ -35,6 +36,14 @@ public class BlogInfoDO {
 
     public void setHeadImg(String headImg) {
         this.headImg = headImg;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getContent() {

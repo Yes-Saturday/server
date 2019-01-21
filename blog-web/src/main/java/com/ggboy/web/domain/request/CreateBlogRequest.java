@@ -16,6 +16,9 @@ public class CreateBlogRequest {
     @NotNull
     @Name("内容")
     private String content;
+    @Name("标签")
+    @MaxLength(32)
+    private String[] tags;
 
     public String getTitle() {
         if (StringUtil.isEmpty(title))
@@ -45,5 +48,13 @@ public class CreateBlogRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }

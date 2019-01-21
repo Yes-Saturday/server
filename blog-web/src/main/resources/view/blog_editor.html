@@ -22,8 +22,13 @@
             </li>
             <li>
                 <span>标题 : </span>
-                <input id="title" type="text" name="title" maxlength="32" style="width: 100%;max-width: 300px;"
-                       value="#(blog.title ??)"/>
+                <input id="title" type="text" maxlength="32" style="width: 100%;max-width: 300px;"
+                       value="#(blog.title ??)" />
+            </li>
+            <li>
+                <span>标签 : </span>
+                <input id="tags" type="text" maxlength="32" style="width: 100%;max-width: 300px;"
+                       value="#(blog.tags ??)" placeholder="多个标签以[;]隔开" />
             </li>
             <li>
                 <span>内容 : </span>
@@ -128,11 +133,13 @@
             $.ajax({
                 url: $(this).attr('url'),
                 type: "POST",
+                traditional: true,
                 data: {
                     'id': $('#blogId').val(),
                     'title': $('#title').val(),
                     'content': $('#tempContent').val(),
-                    'headImg': $('#headImgUrl').val()
+                    'headImg': $('#headImgUrl').val(),
+                    'tags' : $('#tags').val().split(";", -1)
                 },
             }).done(function (result) {
                 if (result.code == 'OK') {

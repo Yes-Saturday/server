@@ -5,28 +5,23 @@ import com.ggboy.common.exception.AssertException;
 
 public class Assert {
     public final static void isNull(Object obj, String message) {
-        if (obj != null)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+        isFalse(obj != null, message);
     }
 
     public final static void isNotNull(Object obj, String message) {
-        if (obj == null)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+        isFalse(obj == null, message);
     }
 
-    public final static void isNotEmpty(String str, String message) {
-        if (StringUtil.isEmpty(str))
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+    public final static void isNotEmpty(Object obj, String message) {
+        isFalse(StringUtil.isEmpty(obj), message);
     }
 
     public final static void isEmpty(Object obj, String message) {
-        if (!StringUtil.isEmpty(obj))
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+        isTrue(StringUtil.isEmpty(obj), message);
     }
 
     public final static void isTrue(boolean bol, String message) {
-        if (!bol)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+        isFalse(!bol, message);
     }
 
     public final static void isFalse(boolean bol, String message) {

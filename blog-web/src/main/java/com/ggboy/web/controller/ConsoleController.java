@@ -6,6 +6,7 @@ import com.ggboy.common.domain.FrontEndResponse;
 import com.ggboy.common.exception._404Exception;
 import com.ggboy.common.utils.JsonUtil;
 import com.ggboy.core.service.BlogService;
+import com.ggboy.core.service.TagService;
 import com.ggboy.system.enums.SequenceName;
 import com.ggboy.system.service.SequenceService;
 import com.ggboy.web.domain.request.CreateBlogRequest;
@@ -21,9 +22,10 @@ public class ConsoleController {
 
     @Autowired
     private BlogService blogService;
-
     @Autowired
     private SequenceService sequenceService;
+    @Autowired
+    private TagService tagService;
 
     @GetMapping
     public String console() {
@@ -52,6 +54,7 @@ public class ConsoleController {
         Long id = sequenceService.next(SequenceName.Blog);
         String idStr = SequenceIdConvert.convertFixedLength("BL10", id, 11);
         blogService.createBlog(idStr, createBlogRequest.getHeadImg(), createBlogRequest.getTitle(), createBlogRequest.getContent());
+        tagService.addIdTags(idStr, createBlogRequest.getTags());
         return FrontEndResponse.success(idStr);
     }
 
@@ -59,6 +62,7 @@ public class ConsoleController {
     @ResponseBody
     public FrontEndResponse updateBlog(@Verify UpdateBlogRequest updateBlogRequest) {
         blogService.updateBlog(updateBlogRequest.getId(), updateBlogRequest.getHeadImg(), updateBlogRequest.getTitle(), updateBlogRequest.getContent());
+        tagService.updateIdTags(updateBlogRequest.getId(), updateBlogRequest.getTags());
         return FrontEndResponse.success(updateBlogRequest.getId());
     }
 }
