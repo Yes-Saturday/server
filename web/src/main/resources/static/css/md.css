@@ -1,0 +1,23 @@
+code {
+	color: #c7254e;
+	background-color: #f9f2f4;
+	border-radius: 2px;
+	padding : 2px 4px;
+}
+
+#content {
+	font-size: 17px;
+	font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: .034em;
+	color: #333;
+}
+
+#content p,h1,h2,h3,h4,h5,h6,h7,img {
+	margin-bottom: 12px;
+}
+
+#content img {
+	max-width: 75%;
+}

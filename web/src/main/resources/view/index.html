@@ -1,0 +1,43 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>abcdefg</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/base.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="a1">
+	<div class="b1">
+		<ul class="d1">
+			<li>
+				<span>-></span>
+				<a href="category">博客分类</a>
+			</li>
+			<li>
+				<span>-></span>
+				<a href="times">时间轴</a>
+			</li>
+			<li>
+				<span>-></span>
+				<a href="tags">标签列表</a>
+			</li>
+			#if(session.user == null)
+			<li>
+				<span>-></span>
+				<a href="/login">管理员登陆</a>
+			</li>
+			#else
+			<li>
+				<span>-></span>
+				<a href="console">控制台 : #(session.user.name)</a>
+			</li>
+			<li>
+				<span>-></span>
+				<a href="/temp/logout">登出</a>
+			</li>
+			#end
+		</ul>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>abcdefg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/base.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="a1">
+    <div style="width: 100%;max-height: 500px;overflow: hidden;">
+        #if(blog.headImg)
+        <img src="#(blog.headImg)" width="100%"/>
+        #end
+    </div>
+    <div class="b1">
+        <p class="c1">#(blog.title)</p>
+        <p class="c2">
+            <span>#(blog.createTime)</span>
+        </p>
+        <div id="content" val="#escape(blog.content)"></div>
+        #if(tags ??)
+        <p class="c2">
+            <span style="margin-right: 10px;">标签：</span>
+            #for(tag : tags)
+            <a href="/tag/#(tag)" style="margin-right: 10px;" >#(tag)</a>
+            #end
+        </p>
+        #end
+        <link href="/static/css/md.css" rel="stylesheet"/>
+        <link href="/static/css/code/tomorrow-night.css" rel="stylesheet"/>
+        <script src="/static/js/md.js" type="text/javascript"></script>
+        <script>
+            window.onload = function () {
+                md.parseAuto(document.getElementById("content").getAttribute("val"), document.getElementById("content"));
+            }
+        </script>
+    </div>
+</div>
+</body>
+</html>

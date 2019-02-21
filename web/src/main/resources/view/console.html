@@ -1,0 +1,34 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>abcdefg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/base.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="a1">
+    <div class="b1">
+        <ul class="d1">
+            <li>
+                <span>-></span>
+                <a href="/console/releaseBlog">发布文章</a>
+            </li>
+            <li>
+                <span>-></span>
+                <a href="/console/updateBlog/13000000051">修改文章</a>
+                <input type="text" oninput="updateInput(this);"/>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function updateInput(element) {
+        var id = element.value;
+        element.parentNode.querySelectorAll('a').forEach(function (aNode) {
+            aNode.setAttribute('href', "/console/updateBlog/" + id);
+        });
+    }
+</script>
+</body>
+</html>

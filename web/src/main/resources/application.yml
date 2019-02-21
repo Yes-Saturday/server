@@ -1,0 +1,37 @@
+server:
+  # 服务端口
+  port: ${system.server.port}
+  servlet:
+    context-path: ${system.server.path}
+    session:
+      timeout: 60
+  tomcat:
+    protocol-header: x-forwarded-proto
+
+# 日志配置
+logging:
+  level:
+    com.ggboy: debug
+    org.springframework: WARN
+    org.spring.springboot.dao: debug
+# Spring配置
+spring:
+  jackson:
+    default-property-inclusion: non_empty
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    use-generated-keys: true
+    default-executor-type: REUSE
+    map-underscore-to-camel-case: true

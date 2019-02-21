@@ -1,0 +1,184 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>abcdefg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/css/base.css" rel="stylesheet"/>
+    <link href="/static/css/editor.css" rel="stylesheet"/>
+</head>
+<div class="a1">
+    <div class="b1">
+        <ul class="d1">
+            <li>
+                <span>封面 : </span>
+                <button id="uploadButton">上传文件</button>
+                <input id="headImgUrl" type="text" value="#(blog.headImg ??)" style="width: 260px;"/>
+                <button id="revokeUpload" style="color:red;" #if(!blog.headImg ??) hidden #end>X</button>
+                <span id="uploadFail" style="color:red;" hidden>上传失败</span>
+                <span id="uploading" style="color:blue;" hidden>上传中</span>
+                <span id="uploadSuccess" style="color:green;" hidden>上传成功</span>
+                <input id="headImg" type="file" hidden/>
+                <input id="blogId" type="text" value="#(blog.id ??)" hidden/>
+            </li>
+            <li>
+                <span>标题 : </span>
+                <input id="title" type="text" maxlength="32" style="width: 100%;max-width: 300px;"
+                       value="#(blog.title ??)" />
+            </li>
+            <li>
+                <span>标签 : </span>
+                <input id="tags" type="text" maxlength="32" style="width: 100%;max-width: 300px;"
+                       value="#(tags ??)" placeholder="多个标签以[;]隔开" />
+            </li>
+            <li>
+                <span>内容 : </span>
+                <button id="show_editor">编辑</button>
+            </li>
+            <li>
+            #if(option == 'release')
+                <button id="submit" url="/console/createBlog">Release Blog</button>
+            #else if(option == 'update')
+                <button id="submit" url="/console/updateBlog">Update Blog</button>
+            </li>
+            #end
+        </ul>
+    </div>
+</div>
+
+<div class="e1" hidden>
+    <div class="f1">
+        <div class="a1 f_lf">
+            <div class="b1">
+                <textarea id="tempContent">#escape(blog.content ??)</textarea>
+            </div>
+        </div>
+        <div class="a1 f_rt">
+            <div style="width: 100%;max-height: 500px;overflow: hidden;">
+                <img src="" alt="error" width="100%"/>
+            </div>
+            <div class="b1">
+                <p class="c1">blog.title</p>
+                <p class="c2">
+                    <span>blog.createTime</span>
+                </p>
+                <div id="content"></div>
+                <link href="/static/css/md.css" rel="stylesheet"/>
+                <link href="/static/css/code/tomorrow-night.css" rel="stylesheet"/>
+            </div>
+        </div>
+    </div>
+    <button id="close_editor">保存</button>
+</div>
+<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/md.js" type="text/javascript"></script>
+<script>
+    window.onload = function () {
+        $('#uploadButton').click(function () {
+            $('#headImg').click();
+        });
+
+        $('#headImg').change(function () {
+            var fd = new FormData();
+            fd.append('file', this.files[0]);
+            uploading();
+            $.ajax({
+                url: "/uploadImg",
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false
+            }).done(function (result) {
+                if (result.code == 'OK')
+                    uploadSuccess(result.data);
+                else
+                    uploadFail(result);
+            }).fail(function (result) {
+                uploadFail(result);
+            });
+        });
+
+        $('#revokeUpload').click(function () {
+            $(this).hide();
+            $('#uploadFail').hide();
+            $('#uploading').hide();
+            $('#uploadSuccess').hide();
+            $('#headImgUrl').val(null);
+        });
+
+        $('#show_editor').click(function () {
+            var headImgUrl = $('#headImgUrl').val();
+            if (headImgUrl == null || headImgUrl == '') {
+                $('.a1 div img').hide();
+            } else {
+                $('.a1 div img').attr('src', headImgUrl);
+                $('.a1 div img').show();
+            }
+
+            $('.b1 .c1').html($('#title').val());
+            var date = new Date();
+            $('.b1 .c2 span').html(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+            edit2Show();
+            $('.e1').show();
+        });
+
+        $('#close_editor').click(function () {
+            $('.e1').hide();
+        });
+
+        $('#tempContent').keyup(function () {
+            edit2Show();
+        });
+
+        $('#submit').click(function () {
+            $.ajax({
+                url: $(this).attr('url'),
+                type: "POST",
+                traditional: true,
+                data: {
+                    'id': $('#blogId').val(),
+                    'title': $('#title').val(),
+                    'content': $('#tempContent').val(),
+                    'headImg': $('#headImgUrl').val(),
+                    'tags' : $('#tags').val().split(";", -1)
+                },
+            }).done(function (result) {
+                if (result.code == 'OK') {
+                    window.location.href = "/info/" + result.data;
+                } else {
+                    alert(result.message);
+                    console.log(result);
+                }
+            }).fail(function (result) {
+                alert("Error");
+                console.log(result);
+            });
+        });
+    }
+
+    function uploadSuccess(url) {
+        $('#uploadFail').hide();
+        $('#uploading').hide();
+        $('#uploadSuccess').show();
+        $('#revokeUpload').show();
+        $('#headImgUrl').val(url);
+    }
+
+    function uploading() {
+        $('#uploadFail').hide();
+        $('#uploading').show();
+        $('#uploadSuccess').hide();
+    }
+
+    function uploadFail(reason) {
+        $('#uploadFail').show();
+        $('#uploading').hide();
+        $('#uploadSuccess').hide();
+        console.log(reason);
+    }
+
+    function edit2Show() {
+        md.parseAuto(document.getElementById("tempContent").value, document.getElementById('content'));
+    }
+</script>
+</body>
+</html>
