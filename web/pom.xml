@@ -60,6 +60,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>simple-blog</finalName>
+        <finalName>saturday</finalName>
     </build>
 </project>
