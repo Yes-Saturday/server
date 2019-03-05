@@ -43,6 +43,13 @@ public class CacheUtil {
         }
     }
 
+    public final static void copyToNewKey(String key, String newKey, int expTime) {
+        var data = get(key);
+        if (data == null)
+            return;
+        put(newKey, data, expTime);
+    }
+
     private final static void gc(boolean now) {
         var gcTime = cacheMap.get("gc#>time");
 

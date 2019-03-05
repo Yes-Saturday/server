@@ -9,6 +9,7 @@ import com.saturday.common.utils.CacheUtil;
 import com.saturday.common.utils.PasswordHandler;
 import com.saturday.system.domain.info.PublisherInfo;
 import com.saturday.system.service.PublisherService;
+import com.saturday.system.service.RsaService;
 import com.saturday.web.constant.SystemConstant;
 import com.saturday.web.domain.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @ResponseBody
-public class LoginController {
+public class LoginController extends BaseController {
 
     @Autowired
     private PublisherService publisherService;
+    @Autowired
+    private RsaService rsaService;
 
     @PostMapping("/doLogin")
     public FrontEndResponse login(@Verify LoginRequest loginRequest, HttpServletRequest request) {
-        byte[] privateKey = CacheUtil.get(SystemConstant.PRIVATE_KEY_ALIAS);
+        byte[] privateKey = rsaService.getPrivateKey(getSessionId());
         if (privateKey == null) {
             throw new BusinessException(ErrorCodeConstant.PUBLIC_KEY_INVALID, "公钥过期");
         }
@@ -46,7 +49,6 @@ public class LoginController {
             throw new BusinessException(ErrorCodeConstant.PASSWORD_WRONG, "密码错误");
 
         request.getSession().setAttribute("publisher", publisherInfo);
-
 
         return FrontEndResponse.success(publisherInfo);
     }
