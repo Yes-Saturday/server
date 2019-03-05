@@ -1,4 +1,5 @@
 .idea/
 target/
 *.iml
-1
+system.properties
+security.properties
