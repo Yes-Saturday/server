@@ -15,7 +15,7 @@ public class SequenceService {
     private SequenceMapper sequenceMapper;
 
     @Transactional
-    public Long next(SequenceName sequenceName) {
+    public long next(SequenceName sequenceName) {
         if (sequenceName == null)
             sequenceName = SequenceName.Default;
 
@@ -25,6 +25,6 @@ public class SequenceService {
             result = sequenceMapper.lockSequenceName(sequenceName.toString());
         }
         sequenceMapper.update(sequenceName.toString());
-        return (Long) result.get("value") + (Integer) result.get("inc");
+        return (long) result.get("value") + (int) result.get("inc");
     }
 }

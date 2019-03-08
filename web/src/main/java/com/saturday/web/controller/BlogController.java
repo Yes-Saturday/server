@@ -1,20 +1,16 @@
 package com.saturday.web.controller;
 
-import com.saturday.common.constant.SymbolConstant;
-import com.saturday.common.exception._404Exception;
 import com.saturday.blog.domain.query.BlogListQuery;
 import com.saturday.blog.enums.BlogOrderBy;
 import com.saturday.blog.service.BasicsService;
 import com.saturday.blog.service.CategoryService;
 import com.saturday.blog.service.TagService;
-import com.saturday.common.utils.ArrayUtil;
+import com.saturday.common.exception._404Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
 
 @Controller
 public class BlogController {

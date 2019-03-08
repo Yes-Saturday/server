@@ -4,7 +4,8 @@ public enum SequenceName {
     Blog("博客", "blog_sequence"),
     Category("分类", "category_sequence"),
     FileName("文件名", "file_name"),
-    Default("默认", "system_base")
+    Default("默认", "system_base"),
+    UserId("统一用户", "user_id_sequence")
     ;
 
     private String memo;

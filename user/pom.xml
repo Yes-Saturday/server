@@ -11,9 +11,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>system</artifactId>
+    <artifactId>user</artifactId>
 
-    <name>system</name>
+    <name>user</name>
 
     <dependencies>
         <dependency>
@@ -29,6 +29,11 @@
         <dependency>
             <groupId>com.ggboy.saturday</groupId>
             <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ggboy.saturday</groupId>
+            <artifactId>sequence</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

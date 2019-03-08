@@ -35,3 +35,7 @@ mybatis:
     use-generated-keys: true
     default-executor-type: REUSE
     map-underscore-to-camel-case: true
+
+mapper:
+  safeDelete: true
+  safeUpdate: true

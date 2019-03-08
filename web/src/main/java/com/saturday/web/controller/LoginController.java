@@ -43,7 +43,7 @@ public class LoginController extends BaseController {
             throw new BusinessException(ErrorCodeConstant.RSA_ERROR, "解密失败");
         }
 
-        PublisherInfo publisherInfo = publisherService.query4Login(loginRequest.getLoginName(), pwd);
+        PublisherInfo publisherInfo = publisherService.query4Login(loginRequest.getLoginNumber(), pwd);
 
         if (publisherInfo == null)
             throw new BusinessException(ErrorCodeConstant.PASSWORD_WRONG, "密码错误");

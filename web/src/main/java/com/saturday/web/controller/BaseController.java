@@ -17,6 +17,7 @@ public class BaseController {
         return request == null ? null : request.getSession(var1);
     }
 
+    @SuppressWarnings("unchecked")
     <T> T getSessionAttribute(String key) {
         var session = getSession(false);
         return session == null ? null : (T) session.getAttribute(key);
