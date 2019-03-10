@@ -1,11 +1,13 @@
 package com.saturday.common.domain;
 
-import com.saturday.common.constant.PropertiesConstant;
 import com.saturday.common.utils.StringUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 public class IPage {
+
+    private final static int DEFAULT_PAGE_SIZE = 8;
+
     private Integer currentPage;
     private Integer pageSize;
     private Boolean isCount;
@@ -23,25 +25,13 @@ public class IPage {
         } catch (NumberFormatException e) {
             currentPage = 1;
         }
-        this.pageSize = PropertiesConstant.getDefaultPageSize();
+        this.pageSize = DEFAULT_PAGE_SIZE;
         this.isCount = true;
     }
 
     public IPage(String page, Integer pageSize) {
-        if (StringUtil.isEmpty(page)) {
-            this.currentPage = 0;
-            this.pageSize = 0;
-            this.isCount = false;
-            return;
-        }
-
-        try {
-            currentPage = Integer.valueOf(page);
-        } catch (NumberFormatException e) {
-            currentPage = 1;
-        }
-        this.pageSize = pageSize != null && pageSize > 0 ? pageSize : PropertiesConstant.getDefaultPageSize();
-        this.isCount = true;
+        this(page);
+        this.pageSize = pageSize != null && pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
     }
 
     public <E> Page<E> startPage() {

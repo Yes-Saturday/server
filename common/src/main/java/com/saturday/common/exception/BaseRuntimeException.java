@@ -12,8 +12,8 @@ public class BaseRuntimeException extends RuntimeException {
         this.memo = memo;
     }
 
-    public BaseRuntimeException(Exception e) {
-        super(e);
+    public BaseRuntimeException(String message, Exception e) {
+        super(message, e);
     }
 
     public String getCode() {

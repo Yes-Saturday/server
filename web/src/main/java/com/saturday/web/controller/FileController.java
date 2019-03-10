@@ -1,12 +1,12 @@
 package com.saturday.web.controller;
 
-import com.saturday.common.constant.PropertiesConstant;
 import com.saturday.common.convert.SequenceIdConvert;
 import com.saturday.common.domain.FrontEndResponse;
 import com.saturday.common.utils.StringUtil;
 import com.saturday.sequence.enums.SequenceName;
 import com.saturday.sequence.service.SequenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +19,9 @@ import java.io.IOException;
 @Controller
 public class FileController {
 
+    @Value("${default.filepath.img}")
+    private String filePathImg;
+
     @Autowired
     private SequenceService sequenceService;
 
@@ -28,7 +31,7 @@ public class FileController {
         try {
             if (file == null)
                 return FrontEndResponse.fail("error", "file is not exits");
-            String fileName = upload(file, PropertiesConstant.getDefaultFilePathImg());
+            String fileName = upload(file, filePathImg);
             var scheme = request.getHeader("x-forwarded-scheme");
             scheme = StringUtil.isEmpty(scheme) ? request.getScheme() : scheme;
             return FrontEndResponse.success(scheme + "://" + request.getServerName() + "/images/" + fileName);

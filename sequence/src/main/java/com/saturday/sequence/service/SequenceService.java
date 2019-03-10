@@ -14,7 +14,7 @@ public class SequenceService {
     @Autowired
     private SequenceMapper sequenceMapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public long next(SequenceName sequenceName) {
         if (sequenceName == null)
             sequenceName = SequenceName.Default;

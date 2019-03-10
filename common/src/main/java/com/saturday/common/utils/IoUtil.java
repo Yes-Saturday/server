@@ -129,4 +129,8 @@ public class IoUtil {
             dir.mkdirs();
         return new BufferedOutputStream(new FileOutputStream(filePath + File.separator + fileName));
     }
+
+    public static InputStream getFileInputStream(String path) throws FileNotFoundException {
+        return new FileInputStream(path);
+    }
 }

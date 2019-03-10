@@ -1,9 +1,11 @@
 package com.saturday.common.domain;
 
-import com.saturday.common.constant.PropertiesConstant;
 import com.github.pagehelper.Page;
 
 public class PageVO {
+
+    private final static int DEFAULT_PAGE_BUTTON_LENGTH = 5;
+
     private Integer page;
     private Integer pages;
     private Integer startArrow;
@@ -17,11 +19,11 @@ public class PageVO {
     }
 
     public PageVO(int page, int pageSize) {
-        this(page, pageSize, PropertiesConstant.getDefaultBlogListShowPageButtonSize());
+        this(page, pageSize, DEFAULT_PAGE_BUTTON_LENGTH);
     }
 
     public PageVO(Page<?> page) {
-        this(page.getPageNum(), page.getPages(), PropertiesConstant.getDefaultBlogListShowPageButtonSize());
+        this(page.getPageNum(), page.getPages(), DEFAULT_PAGE_BUTTON_LENGTH);
     }
 
     public Integer getPage() {

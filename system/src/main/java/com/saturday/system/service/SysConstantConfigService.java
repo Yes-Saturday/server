@@ -1,11 +1,11 @@
 package com.saturday.system.service;
 
 import com.saturday.common.constant.ErrorCodeConstant;
-import com.saturday.common.constant.PropertiesConstant;
 import com.saturday.common.exception.InternalException;
 import com.saturday.common.utils.PasswordHandler;
 import com.saturday.system.mapper.SysConstantConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
@@ -17,11 +17,14 @@ import java.util.Map;
 @Service
 public class SysConstantConfigService {
 
+    @Value("${constant.config.type.friendLink}")
+    private String friendLinkType;
+
     @Autowired
     private SysConstantConfigMapper sysConstantConfigMapper;
 
     public List<Map<String, Object>> getFriendLink() {
-        List<String> friendLinkList = sysConstantConfigMapper.queryList(PropertiesConstant.getFriendLinkType());
+        List<String> friendLinkList = sysConstantConfigMapper.queryList(friendLinkType);
 
         var result = new ArrayList<Map<String, Object>>(friendLinkList.size());
         for (String item : friendLinkList) {

@@ -25,14 +25,14 @@ public class TempController {
             return "error";
         }
 
-        if (!"ggboy".equals(loginRequest.getLoginName()) || !"Zzq=123456".equals(loginRequest.getPassword())) {
+        if (!"ggboy".equals(loginRequest.getLoginNumber()) || !"Zzq=123456".equals(loginRequest.getPassword())) {
             CacheUtil.put("loginError", new Object(), 5 * 60);
             modelMap.put("msg", "password is wrong!");
             return "error";
         }
 
         var userInfo = new HashMap<String, String>(2);
-        userInfo.put("name", loginRequest.getLoginName());
+        userInfo.put("name", loginRequest.getLoginNumber());
         request.getSession().setAttribute("user", userInfo);
         request.getSession().setMaxInactiveInterval(3600);
         return "redirect:/";

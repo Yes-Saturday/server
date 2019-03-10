@@ -1,5 +1,6 @@
 package com.saturday.user.service;
 
+import com.saturday.common.exception.InternalException;
 import com.saturday.user.domain.entity.UserBasics;
 import com.saturday.user.domain.entity.UserSecurity;
 import com.saturday.user.mapper.UserBasicsMapper;
@@ -16,23 +17,38 @@ public class UserService {
     @Autowired
     private UserBasicsMapper userBasicsMapper;
 
-    @Transactional
-    public boolean createUser(String userId, String loginNumber, String pwd) {
+    @Transactional(rollbackFor = Exception.class)
+    public void createUser(String userId, String loginNumber, String userName, String pwd) {
         var userBasics = new UserBasics();
-        userBasics.setUserId();
-        userBasicsMapper.insert()
-        var userSecurity = new UserSecurity();
-        userSecurity.setUserId(userId);
-        userSecurity.setLoginNumber(loginNumber);
-        userSecurity.setPwd(pwd);
-        return userSecurityMapper.insert(userSecurity) > 0;
+        userBasics.setUserId(userId);
+        userBasics.setUserName(userName);
+        boolean result = userBasicsMapper.insert(userBasics) > 0;
+
+        if (result) {
+            var userSecurity = new UserSecurity();
+            userSecurity.setUserId(userId);
+            userSecurity.setLoginNumber(loginNumber);
+            userSecurity.setPwd(pwd);
+            result = userSecurityMapper.insert(userSecurity) > 0;
+        }
+
+        if (!result)
+            throw new InternalException("数据库插入失败");
     }
 
-    public UserSecurity queryUser(String loginNumber, String pwd) {
+    public UserBasics queryUser(String loginNumber, String pwd) {
         var userSecurity = new UserSecurity();
         userSecurity.setLoginNumber(loginNumber);
         userSecurity.setPwd(pwd);
-        return userSecurityMapper.selectOne(userSecurity);
+        userSecurity = userSecurityMapper.selectOne(userSecurity);
+
+        if (userSecurity == null)
+            return null;
+        return userBasicsMapper.selectByPrimaryKey(userSecurity.getUserId());
+    }
+
+    public UserBasics queryUserByLoginNumber(String loginNumber) {
+        return queryUser(loginNumber, null);
     }
 
     public UserSecurity queryUser(String userId) {

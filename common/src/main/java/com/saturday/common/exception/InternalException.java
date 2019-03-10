@@ -6,11 +6,11 @@ public class InternalException extends BaseRuntimeException {
         super(code, message, "");
     }
 
-    public InternalException(String code, String message, String memo) {
-        super(code, message, memo);
+    public InternalException(String message) {
+        super(null ,message, null);
     }
 
-    public InternalException(Exception e) {
-        super(e);
+    public InternalException(String message, Exception e) {
+        super(message, e);
     }
 }

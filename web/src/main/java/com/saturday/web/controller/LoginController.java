@@ -5,12 +5,10 @@ import com.saturday.common.constant.ErrorCodeConstant;
 import com.saturday.common.domain.FrontEndResponse;
 import com.saturday.common.exception.BusinessException;
 import com.saturday.common.utils.BaseRSA;
-import com.saturday.common.utils.CacheUtil;
 import com.saturday.common.utils.PasswordHandler;
-import com.saturday.system.domain.info.PublisherInfo;
-import com.saturday.system.service.PublisherService;
 import com.saturday.system.service.RsaService;
-import com.saturday.web.constant.SystemConstant;
+import com.saturday.user.domain.entity.UserBasics;
+import com.saturday.user.service.UserService;
 import com.saturday.web.domain.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,39 +23,37 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController extends BaseController {
 
     @Autowired
-    private PublisherService publisherService;
+    private UserService userService;
     @Autowired
     private RsaService rsaService;
 
     @PostMapping("/doLogin")
-    public FrontEndResponse login(@Verify LoginRequest loginRequest, HttpServletRequest request) {
+    public FrontEndResponse login(@Verify LoginRequest loginRequest) {
         byte[] privateKey = rsaService.getPrivateKey(getSessionId());
-        if (privateKey == null) {
-            throw new BusinessException(ErrorCodeConstant.PUBLIC_KEY_INVALID, "公钥过期");
-        }
+        if (privateKey == null)
+            return FrontEndResponse.fail("400", "公钥过期");
 
         String pwd = loginRequest.getPassword();
         try {
             pwd = PasswordHandler.getPwd(BaseRSA.decryptByPrivateKey(Base64Utils.decodeFromString(pwd), privateKey));
         } catch (Exception e) {
-            throw new BusinessException(ErrorCodeConstant.RSA_ERROR, "解密失败");
+            return FrontEndResponse.fail("400", "RSA解密失败");
         }
 
-        PublisherInfo publisherInfo = publisherService.query4Login(loginRequest.getLoginNumber(), pwd);
+        var userBasics = userService.queryUser(loginRequest.getLoginNumber(), pwd);
 
-        if (publisherInfo == null)
-            throw new BusinessException(ErrorCodeConstant.PASSWORD_WRONG, "密码错误");
+        if (userBasics == null)
+            return FrontEndResponse.fail("000", "用户名或密码错误");
 
-        request.getSession().setAttribute("publisher", publisherInfo);
-
-        return FrontEndResponse.success(publisherInfo);
+        setSessionAttribute("user", userBasics);
+        return FrontEndResponse.success();
     }
 
     @PostMapping("/doLogout")
-    public FrontEndResponse logout(HttpServletRequest request) {
-        var session = request.getSession(false);
+    public FrontEndResponse logout() {
+        var session = getSession(false);
         if (session != null)
-            session.setAttribute("publisher", null);
+            session.setAttribute("user", null);
         return FrontEndResponse.success();
     }
 }

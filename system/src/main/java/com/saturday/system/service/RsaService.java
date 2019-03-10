@@ -61,7 +61,7 @@ public class RsaService {
     }
 
     public byte[] getPrivateKey(String ext) {
-        return ((RsaKeyInfo) CacheUtil.get(RSA_KEY_ALIAS + ext == null ? "" : ext)).getPrivateKey();
+        return ((RsaKeyInfo) CacheUtil.get(RSA_KEY_ALIAS + (ext == null ? "" : ext))).getPrivateKey();
     }
 
     private void setPrivateKey(String ext, int expTime) {

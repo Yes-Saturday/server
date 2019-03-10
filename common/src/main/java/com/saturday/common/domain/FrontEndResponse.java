@@ -36,7 +36,7 @@ public class FrontEndResponse {
     }
 
     public final static FrontEndResponse success(Object data) {
-        return new FrontEndResponse("OK", "", data);
+        return new FrontEndResponse("OK", null, data);
     }
 
     public final static FrontEndResponse success() {

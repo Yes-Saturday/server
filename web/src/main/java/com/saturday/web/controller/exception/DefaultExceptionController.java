@@ -39,7 +39,7 @@ public class DefaultExceptionController {
     }
 
     @ExceptionHandler({MaxUploadSizeExceededException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public FrontEndResponse MaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return system_error;
