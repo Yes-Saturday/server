@@ -25,6 +25,7 @@ public class ArrayUtil {
         return sb.toString();
     }
 
+    @SuppressWarnings("unchecked")
     public final static <T> T[] merge(T[] array1, T[] array2) {
         boolean array1Flag = isEmpty(array1);
         boolean array2Flag = isEmpty(array2);
