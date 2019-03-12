@@ -4,7 +4,6 @@ import com.saturday.web.converter.DateConverter;
 import com.saturday.web.converter.EnumConverterFactory;
 import com.saturday.web.interceptor.BaseInterceptor;
 import com.saturday.web.interceptor.LoginInterceptor;
-import com.saturday.web.interceptor.VerifyInterceptor;
 import com.jfinal.template.ext.spring.JFinalViewResolver;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,6 @@ public class WebAppConfig {
             // Spring 拦截器
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
-                registry.addInterceptor(new VerifyInterceptor()).addPathPatterns("/**");
                 registry.addInterceptor(new LoginInterceptor()).addPathPatterns(new String[]{
                         "/console/**", "/user/**", "/cache/**", "/file/**"});
             }

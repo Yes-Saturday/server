@@ -54,4 +54,8 @@ public class Validator {
             }
         }
     }
+
+    public final static void verify(Object obj) throws VerifyException {
+        // TODO
+    }
 }
