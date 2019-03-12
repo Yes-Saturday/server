@@ -3,7 +3,6 @@ package com.saturday.web.controller.user;
 import com.saturday.common.annotation.Verify;
 import com.saturday.common.convert.SequenceIdConvert;
 import com.saturday.common.domain.FrontEndResponse;
-import com.saturday.common.exception.BusinessException;
 import com.saturday.common.utils.PasswordHandler;
 import com.saturday.sequence.enums.SequenceName;
 import com.saturday.sequence.service.SequenceService;

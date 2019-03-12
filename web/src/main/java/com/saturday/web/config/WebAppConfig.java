@@ -23,8 +23,9 @@ public class WebAppConfig {
             // Spring 拦截器
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
-                registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/console/**");
                 registry.addInterceptor(new VerifyInterceptor()).addPathPatterns("/**");
+                registry.addInterceptor(new LoginInterceptor()).addPathPatterns(new String[]{
+                        "/console/**", "/user/**", "/cache/**", "/file/**"});
             }
 
             // Spring 参数转换器
