@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController extends BaseController {
 
+    private final static String LOGIN_ERROR_KEY = "LOGIN_ERROR#>";
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -25,7 +27,7 @@ public class LoginController extends BaseController {
     @PostMapping("/doLogin")
     public FrontEndResponse login(@Verify LoginRequest loginRequest) {
         // TODO
-        Object loginError = CacheUtil.get("loginError");
+        Object loginError = CacheUtil.get(buildLoginErrorKey(loginRequest.getLoginNumber()));
         if (loginError != null)
             return FrontEndResponse.fail("000", "登陆频繁");
 
@@ -44,7 +46,7 @@ public class LoginController extends BaseController {
 
         if (userBasics == null) {
             // TODO
-            CacheUtil.put("loginError", new Object(), 5 * 60);
+            CacheUtil.put(buildLoginErrorKey(loginRequest.getLoginNumber()), new Object(), 5 * 60);
             return FrontEndResponse.fail("000", "用户名或密码错误");
         }
 
@@ -59,5 +61,9 @@ public class LoginController extends BaseController {
         if (session != null)
             session.setAttribute("user", null);
         return FrontEndResponse.success();
+    }
+
+    private String buildLoginErrorKey(String loginNumber) {
+        return LOGIN_ERROR_KEY + loginNumber;
     }
 }
