@@ -13,9 +13,9 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class DefaultExceptionController {
-    private final FrontEndResponse system_error = FrontEndResponse.fail("SYSTEM_ERROR", "系统内部错误");;
-
     private final static Logger log = LoggerFactory.getLogger(DefaultExceptionController.class);
+
+    private final FrontEndResponse system_error = FrontEndResponse.fail("500", "系统内部错误");
 
     @ExceptionHandler({InternalException.class})
     @ResponseStatus(HttpStatus.OK)
@@ -25,11 +25,18 @@ public class DefaultExceptionController {
         return system_error;
     }
 
-    @ExceptionHandler({VerifyException.class, BusinessException.class})
+    @ExceptionHandler({BusinessException.class})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public FrontEndResponse businessException(BaseRuntimeException e) {
+    public FrontEndResponse businessException(BusinessException e) {
         return FrontEndResponse.fail(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler({VerifyException.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public FrontEndResponse verifyException(VerifyException e) {
+        return FrontEndResponse.fail("400", e.getMessage());
     }
 
     @ExceptionHandler({_404Exception.class})

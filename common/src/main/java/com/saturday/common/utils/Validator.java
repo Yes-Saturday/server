@@ -12,6 +12,17 @@ public class Validator {
             Name nameAnnotation = field.getAnnotation(Name.class);
             String name = nameAnnotation == null ? field.getName() : nameAnnotation.value();
             String[] values = parameterMap.get(field.getName());
+
+            Size size = field.getAnnotation(Size.class);
+            if (size != null && values != null) {
+                if (size.value() > 0)
+                    Assert.isTrue(values.length == size.value(), "{" + name + "}数组长度不正确");
+                if (size.max() > 0)
+                    Assert.isFalse(values.length > size.max(), "{" + name + "}数组长度超长");
+                if (size.min() > 0)
+                    Assert.isFalse(values.length < size.min(), "{" + name + "}数组长度过短");
+            }
+
             values = values == null ? new String[] {null} : values;
 
             for (var value : values) {
@@ -32,16 +43,14 @@ public class Validator {
                 }
 
                 Length length = field.getAnnotation(Length.class);
-                if (length != null)
-                    Assert.isTrue(value.length() == length.value(), "{" + name + "}字段长度不正确");
-
-                MaxLength maxLength = field.getAnnotation(MaxLength.class);
-                if (maxLength != null)
-                    Assert.isFalse(value.length() > maxLength.value(), "{" + name + "}字段长度超长");
-
-                MinLength minLength = field.getAnnotation(MinLength.class);
-                if (minLength != null)
-                    Assert.isFalse(value.length() < minLength.value(), "{" + name + "}字段长度过短");
+                if (length != null) {
+                    if (length.value() > 0)
+                        Assert.isTrue(value.length() == length.value(), "{" + name + "}字段长度不正确");
+                    if (length.max() > 0)
+                        Assert.isFalse(value.length() > length.max(), "{" + name + "}字段长度超长");
+                    if (length.min() > 0)
+                        Assert.isFalse(value.length() < length.min(), "{" + name + "}字段长度过短");
+                }
             }
         }
     }

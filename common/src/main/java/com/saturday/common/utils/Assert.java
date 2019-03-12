@@ -1,6 +1,5 @@
 package com.saturday.common.utils;
 
-import com.saturday.common.constant.ErrorCodeConstant;
 import com.saturday.common.exception.AssertException;
 
 public class Assert {
@@ -26,21 +25,21 @@ public class Assert {
 
     public final static void isFalse(boolean bol, String message) {
         if (bol)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+            throw new AssertException(message);
     }
 
     public final static void maxLength(Object obj, int maxLength, String message) {
         if (obj != null && obj.toString().length() > maxLength)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message, obj.toString());
+            throw new AssertException(message);
     }
 
     public final static void minLength(String str, int minLength, String message) {
         if (str != null && str.length() < minLength)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message);
+            throw new AssertException(message);
     }
 
     public final static void length(Object obj, int length, String message) {
         if (obj != null && obj.toString().length() != length)
-            throw new AssertException(ErrorCodeConstant.PARAMETER_ERROR, message, obj.toString());
+            throw new AssertException(message);
     }
 }

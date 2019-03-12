@@ -12,6 +12,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.Valid;
+
 @Controller
 public class BlogController {
 
@@ -88,10 +90,5 @@ public class BlogController {
         modelMap.put("blogList", list);
         modelMap.put("tagName", tag);
         return "tag";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
     }
 }

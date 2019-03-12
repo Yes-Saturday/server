@@ -32,13 +32,13 @@ public class FileController {
     public FrontEndResponse uploadImg(MultipartFile file, HttpServletRequest request) {
         try {
             if (file == null)
-                return FrontEndResponse.fail("error", "file is not exits");
+                return FrontEndResponse.fail("400", "file is not exits");
             String fileName = upload(file, filePathImg);
             var scheme = request.getHeader("x-forwarded-scheme");
             scheme = StringUtil.isEmpty(scheme) ? request.getScheme() : scheme;
             return FrontEndResponse.success(scheme + "://" + request.getServerName() + "/images/" + fileName);
         } catch (IOException e) {
-            return FrontEndResponse.fail("error", e.getMessage());
+            return FrontEndResponse.fail("500", e.getMessage());
         }
     }
 

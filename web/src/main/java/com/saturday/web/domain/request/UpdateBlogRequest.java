@@ -1,7 +1,6 @@
 package com.saturday.web.domain.request;
 
 import com.saturday.common.annotation.Length;
-import com.saturday.common.annotation.MaxLength;
 import com.saturday.common.annotation.Name;
 import com.saturday.common.annotation.NotNull;
 import com.saturday.common.utils.StringUtil;
@@ -16,17 +15,14 @@ public class UpdateBlogRequest {
     @Name("ID")
     private String id;
     @NotNull
-    @MaxLength(32)
     @Name("标题")
     private String title;
-    @MaxLength(255)
     @Name("封面")
     private String headImg;
     @NotNull
     @Name("内容")
     private String content;
     @Name("标签")
-    @MaxLength(32)
     private String[] tags;
 
     public String getId() {
