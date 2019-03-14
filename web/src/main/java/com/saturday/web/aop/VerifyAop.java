@@ -20,14 +20,10 @@ public class VerifyAop {
         if (args == null || args.length == 0)
             return;
 
-        try {
-            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-            var parameters = method.getParameters();
-            for (var i = 0; i < parameters.length; ++i)
-                if (parameters[i].isAnnotationPresent(Verify.class))
-                    Validator.verify(args[i]);
-        } catch (Exception e) {
-            throw new InternalException("参数校验发生未知异常", e);
-        }
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        var parameters = method.getParameters();
+        for (var i = 0; i < parameters.length; ++i)
+            if (parameters[i].isAnnotationPresent(Verify.class))
+                Validator.verify(args[i]);
     }
 }

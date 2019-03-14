@@ -43,6 +43,7 @@ public class StringUtil {
         String[] strs = StringUtil.split(data, delimiter);
 
         List<String> list = new ArrayList<>(strs.length);
+
         for (String item : strs)
             list.add(item);
 
@@ -58,33 +59,15 @@ public class StringUtil {
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
-        if (isEmpty(str))
-            return str;
-
-        StringBuilder sb = new StringBuilder(str.length());
-
-        if (capitalize)
-            sb.append(Character.toUpperCase(str.charAt(0)));
-        else
-            sb.append(Character.toLowerCase(str.charAt(0)));
-
-        return sb.append(str.substring(1)).toString();
+        return isEmpty(str) ? str : new StringBuilder(str.length()).append(capitalize ? Character.toUpperCase(str.charAt(0)) : Character.toLowerCase(str.charAt(0))).append(str.substring(1)).toString();
     }
 
     public static byte[] toBytes(String str, Charset charset) {
-        if (isEmpty(str))
-            return new byte[0];
-
-        return str.getBytes(charset);
+        return isEmpty(str) ? new byte[0] : str.getBytes(charset);
     }
 
     public final static String[] split(String data, String delimiter, int index) {
-        if (isEmpty(data))
-            return null;
-        else if (isEmpty(delimiter))
-            return new String[]{data};
-
-        return data.split(delimiter, index);
+        return isEmpty(data) ? null : isEmpty(delimiter) ? new String[]{data} : data.split(delimiter, index);
     }
 
     public final static byte[] hexStringToBytes(String data) {
