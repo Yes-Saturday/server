@@ -1,63 +1,107 @@
 package com.saturday.common.utils;
 
 import com.saturday.common.annotation.Verify;
-import com.saturday.common.annotation.Verify.*;
+import com.saturday.common.annotation.Verify.Length;
+import com.saturday.common.annotation.Verify.Name;
+import com.saturday.common.annotation.Verify.NotEmpty;
+import com.saturday.common.annotation.Verify.NotNull;
+import com.saturday.common.annotation.Verify.Pattern;
+import com.saturday.common.annotation.Verify.Size;
 import com.saturday.common.exception.AssertException;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-@Slf4j
 public class Validator {
 
-    public final static void verify(Object object) throws AssertException {
+    private final Map<Object, Set<Class<?>>> objects;
+    private final AnnotationFinder annotationFinder;
+
+    public Validator() {
+        objects = new HashMap<>();
+        annotationFinder = new AnnotationFinder();
+    }
+
+    public final static void staticVerify(Object object) throws AssertException {
         Assert.isNotNull(object, "校验参数为空");
-        for (Field field : object.getClass().getDeclaredFields()) {
+        new Validator().verify(object);
+    }
+
+    public final void verify(Object object) throws AssertException {
+        try {
+            Assert.isNotNull(object, "校验参数为空");
+            doVerify(object);
+        } finally {
+            if (objects != null)
+                objects.clear();
+        }
+    }
+
+    private final void doVerify(Object object) throws AssertException {
+        doVerify(object, object.getClass());
+    }
+
+    private final void doVerify(Object object, Class<?> clazz) throws AssertException {
+        if (isVerified(object, clazz))
+            return;
+
+        if (clazz.getSuperclass() != null && !clazz.getSuperclass().equals(Object.class))
+            doVerify(object, clazz.getSuperclass());
+
+        for (var field : clazz.getDeclaredFields()) {
             String name = field.getAnnotation(Name.class) == null ? field.getName() : field.getAnnotation(Name.class).value();
 
             Object value = null;
             try {
                 value = object.getClass().getMethod("get" + StringUtil.toUpperCase(field.getName())).invoke(object);
             } catch (Exception e) {
-                log.warn("校验时获取参数异常", e);
             }
 
-            if (field.isAnnotationPresent(Verify.class))
-                verify(value);
-
             verifyNotNull(field, value, name);
-            verifyEnum(field, value, name);
             verifySize(field, value, name);
             verifyNotEmpty(field, value, name);
             verifyPattern(field, value, name);
             verifyLength(field, value, name);
+
+            if (field.isAnnotationPresent(Verify.class))
+                if (field.getType().isArray()) {
+                    if (value != null)
+                        for (var item : (Object[]) value)
+                            doVerify(item, field.getType().getComponentType());
+                } else if (value instanceof Collection) {
+                    for (var item : (Collection<?>) value)
+                        doVerify(item, field.getType().getComponentType());
+                } else
+                    doVerify(value, field.getType());
         }
     }
 
-    private final static void verifyNotNull(Field field, Object value, String name) {
+    private final void verifyNotNull(Field field, Object value, String name) {
         if (field.isAnnotationPresent(NotNull.class))
             Assert.isNotNull(value, "{" + name + "}字段不能为空");
     }
 
-    private final static void verifyNotEmpty(Field field, Object value, String name) {
+    private final void verifyNotEmpty(Field field, Object value, String name) {
         if (field.isAnnotationPresent(NotEmpty.class))
             Assert.isNotEmpty(value, "{" + name + "}字段不能为空");
     }
 
-    private final static void verifyPattern(Field field, Object value, String name) {
+    private final void verifyPattern(Field field, Object value, String name) {
         if (value == null)
             return;
 
-        var email = field.getAnnotation(Mobile.class);
-        var pattern = field.getAnnotation(Pattern.class);
-        System.out.println(field.isAnnotationPresent(Pattern.class));
+        var pattern = annotationFinder.find(field, Pattern.class);
         if (pattern == null)
             return;
 
         Assert.isTrue(RegexUtils.isMatch(pattern.value(), value.toString()), "{" + name + "}字段不为正确格式");
     }
 
-    private final static void verifyLength(Field field, Object value, String name) {
+    private final void verifyLength(Field field, Object value, String name) {
         if (value == null)
             return;
 
@@ -73,10 +117,7 @@ public class Validator {
             Assert.isFalse(value.toString().length() < length.min(), "{" + name + "}字段过短");
     }
 
-    /**
-     * Array/List/Map
-     */
-    private final static void verifySize(Field field, Object value, String name) {
+    private final void verifySize(Field field, Object value, String name) {
         if (value == null)
             return;
 
@@ -84,24 +125,32 @@ public class Validator {
         if (size == null)
             return;
 
+        var length = -1;
         if (value.getClass().isArray())
-            return;
-        // TODO
+            length = ((Object[]) value).length;
+        else if (value instanceof Collection)
+            length = ((Collection) value).size();
+        else if (value instanceof Map)
+            length = ((Map) value).size();
+
+        if (size.value() > 0)
+            Assert.isTrue(length == size.value(), "{" + name + "}字段大小不正确");
+        if (size.max() > 0)
+            Assert.isFalse(length > size.max(), "{" + name + "}字段过大");
+        if (size.min() > 0)
+            Assert.isFalse(length < size.min(), "{" + name + "}字段过小");
     }
 
-    private final static void verifyEnum(Field field, Object value, String name) {
-        if (value == null)
-            return;
+    private final boolean isVerified(Object object, Class<?> clazz) {
+        var temp = objects.get(object);
 
-        if (!field.getType().isEnum())
-            return;
+        if (temp == null) {
+            objects.put(object, new HashSet<>() {{
+                add(clazz);
+            }});
+            return false;
+        }
 
-        boolean flag = false;
-        for (Object item : field.getType().getEnumConstants())
-            if (item.toString().equals(value)) {
-                flag = true;
-                break;
-            }
-        Assert.isTrue(flag, "{" + name + "}参数非法");
+        return !temp.add(clazz);
     }
 }

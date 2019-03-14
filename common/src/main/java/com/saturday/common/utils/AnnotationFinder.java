@@ -12,7 +12,7 @@ import java.util.Set;
 public class AnnotationFinder {
     private final Set<Class<? extends Annotation>> annotations;
 
-    private AnnotationFinder() {
+    public AnnotationFinder() {
         annotations = new HashSet<>();
     }
 
@@ -45,8 +45,8 @@ public class AnnotationFinder {
                 continue;
 
             // 忽略已查找过的注解，避免循环依赖
-            if (annotations.add(anno.getClass())) {
-                var result = doFind(anno.getClass(), clazz);
+            if (annotations.add(anno.annotationType())) {
+                var result = doFind(anno.annotationType(), clazz);
                 if (result != null)
                     return result;
             }
