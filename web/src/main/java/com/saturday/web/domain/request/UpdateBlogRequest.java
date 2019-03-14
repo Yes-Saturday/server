@@ -1,8 +1,6 @@
 package com.saturday.web.domain.request;
 
-import com.saturday.common.annotation.Length;
-import com.saturday.common.annotation.Name;
-import com.saturday.common.annotation.NotNull;
+import com.saturday.common.annotation.Verify.*;
 import com.saturday.common.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
