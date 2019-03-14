@@ -1,7 +1,6 @@
 package com.saturday.web.aop;
 
 import com.saturday.common.annotation.Verify;
-import com.saturday.common.exception.InternalException;
 import com.saturday.common.utils.Validator;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,6 +23,6 @@ public class VerifyAop {
         var parameters = method.getParameters();
         for (var i = 0; i < parameters.length; ++i)
             if (parameters[i].isAnnotationPresent(Verify.class))
-                Validator.verify(args[i]);
+                Validator.staticVerify(args[i]);
     }
 }
