@@ -17,19 +17,19 @@ public class AnnotationFinder {
     }
 
     public final static <T extends Annotation> T getAnnotation(AnnotatedElement element, Class<T> clazz) {
-        return new AnnotationFinder().find0(element, clazz);
+        return new AnnotationFinder().doFind(element, clazz);
     }
 
     public final <T extends Annotation> T find(AnnotatedElement element, Class<T> clazz) {
         try {
-            return find0(element, clazz);
+            return doFind(element, clazz);
         } finally {
             if (annotations != null)
                 annotations.clear();
         }
     }
 
-    private final <T extends Annotation> T find0(AnnotatedElement element, Class<T> clazz) {
+    private final <T extends Annotation> T doFind(AnnotatedElement element, Class<T> clazz) {
         if (clazz == null)
             return null;
 
@@ -45,10 +45,11 @@ public class AnnotationFinder {
                 continue;
 
             // 忽略已查找过的注解，避免循环依赖
-            if (!annotations.add(anno.getClass()))
-                continue;
-
-            return find(anno.getClass(), clazz);
+            if (annotations.add(anno.getClass())) {
+                var result = doFind(anno.getClass(), clazz);
+                if (result != null)
+                    return result;
+            }
         }
 
         return null;
