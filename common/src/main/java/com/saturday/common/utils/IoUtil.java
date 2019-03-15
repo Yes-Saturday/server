@@ -28,31 +28,25 @@ public class IoUtil {
         }
     }
 
-    public final static byte[] in2BytesByLength(InputStream in, int dataLength) throws CommonUtilException {
+    public final static byte[] in2BytesByLength(InputStream in, int dataLength) throws IOException {
         byte[] data = new byte[dataLength];
-        in2BytesByLength(in, data, dataLength);
+        if (in2BytesByLength(data, in, dataLength) != dataLength)
+            return null;
         return data;
     }
 
-    public final static int in2BytesByLength(InputStream in, byte[] data, int dataLength) throws CommonUtilException {
-        if (in == null || dataLength <= 0) {
-            throw new CommonUtilException("", "");
-        }
+    public final static int in2BytesByLength(byte[] data, InputStream in, int dataLength) throws IOException {
+        if (data.length != dataLength)
+            return -1;
 
-        try {
-            int dataSize;
-            int count = 0;
-            while (count < dataLength) {
-                dataSize = in.read(data, count, dataLength - count);
-                if (dataSize == -1) {
-                    break;
-                }
-                count += dataSize;
-            }
-            return count;
-        } catch (IOException e) {
-            throw new CommonUtilException("", "");
+        int count = 0;
+        while (count < dataLength) {
+            int dataSize = in.read(data, count, dataLength - count);
+            if (dataSize == -1)
+                break;
+            count += dataSize;
         }
+        return count;
     }
 
     public final static int in2Out(InputStream in, OutputStream out) throws IOException {
