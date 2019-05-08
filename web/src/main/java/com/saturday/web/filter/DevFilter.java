@@ -14,13 +14,14 @@ public class DevFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("do filter");
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpServletRequest req = (HttpServletRequest) request;
+
         resp.setHeader("Access-Control-Allow-Origin", req.getHeader("origin"));
         resp.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Origin, Authorization");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
         resp.setHeader("Access-Control-Allow-Credentials", "true");
+
         chain.doFilter(request, response);
     }
 

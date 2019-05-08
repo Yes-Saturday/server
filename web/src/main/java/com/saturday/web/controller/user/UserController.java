@@ -72,7 +72,7 @@ public class UserController extends BaseController {
 
         if (userBasics == null) {
             // TODO
-            CacheUtil.put(buildLoginErrorKey(loginRequest.getLoginNumber()), new Object(), 5 * 60);
+            CacheUtil.put(buildLoginErrorKey(loginRequest.getLoginNumber()), "", 5 * 60);
             throw new BusinessException("904", "用户名或密码错误");
         }
 

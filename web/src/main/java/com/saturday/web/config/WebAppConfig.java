@@ -5,6 +5,7 @@ import com.saturday.web.converter.EnumConverterFactory;
 import com.saturday.web.interceptor.BaseInterceptor;
 import com.jfinal.template.ext.spring.JFinalViewResolver;
 import com.jfinal.template.source.ClassPathSourceFactory;
+import com.saturday.web.interceptor.SecurityInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -21,6 +22,7 @@ public class WebAppConfig {
             // Spring 拦截器
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new BaseInterceptor()).addPathPatterns("/**");
+                registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/**");
             }
 
             // Spring 参数转换器
