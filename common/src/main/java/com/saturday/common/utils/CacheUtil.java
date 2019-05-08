@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CacheUtil {
     private final static Map<String, Cache> cacheMap = new ConcurrentHashMap<>();
 
+    @SuppressWarnings("unchecked")
     public final static <T> T get(String key) {
         Cache cache = cacheMap.get(key);
         return cache == null || cache.isInvalid() ? null : (T) cache.getData();
@@ -27,6 +28,7 @@ public class CacheUtil {
     /**
      * only putCopy can getCopy
      */
+    @SuppressWarnings("unchecked")
     public final static <T> T getCopy(String key) {
         try {
             return (T) IoUtil.byte2Obj(get(key));

@@ -17,7 +17,7 @@ public class RsaService {
 
     private final static ReadWriteLock lock = new ReentrantReadWriteLock();
     public final static String RSA_KEY_ALIAS = "RsaKey#>";
-    public final static int RSA_EXP_TIME = 5*60;
+    public final static int RSA_EXP_TIME = 5 * 60;
     public final static int PRIVATE_RSA_EXP_TIME = 60;
 
 
@@ -61,7 +61,8 @@ public class RsaService {
     }
 
     public byte[] getPrivateKey(String ext) {
-        return ((RsaKeyInfo) CacheUtil.get(RSA_KEY_ALIAS + (ext == null ? "" : ext))).getPrivateKey();
+        var rsaKeyInfo = CacheUtil.get(RSA_KEY_ALIAS + (ext == null ? "" : ext));
+        return rsaKeyInfo != null ? ((RsaKeyInfo) rsaKeyInfo).getPrivateKey() : null;
     }
 
     private void setPrivateKey(String ext, int expTime) {

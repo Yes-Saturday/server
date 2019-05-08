@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EnumConverterFactory implements ConverterFactory<String, Enum> {
     private final Map<Class<?>, EnumConverter> converterMap = new ConcurrentHashMap<>(8);
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends Enum> Converter<String, T> getConverter(Class<T> targetType) {
         EnumConverter converter = converterMap.get(targetType);

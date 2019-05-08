@@ -16,6 +16,7 @@
         <module>system</module>
         <module>sequence</module>
         <module>user</module>
+        <module>auth</module>
         <module>blog</module>
     </modules>
 

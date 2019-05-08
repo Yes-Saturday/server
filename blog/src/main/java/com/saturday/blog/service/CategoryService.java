@@ -1,6 +1,6 @@
 package com.saturday.blog.service;
 
-import com.saturday.blog.mapper.BlogMapper;
+import com.saturday.blog.mapper.BlogBasicsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class CategoryService {
     @Autowired
-    private BlogMapper blogMapper;
+    private BlogBasicsMapper blogMapper;
 
     public List<Map<String, Object>> queryList() {
         return blogMapper.selectParentCategory();

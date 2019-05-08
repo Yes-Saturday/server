@@ -1,8 +1,8 @@
 package com.saturday.common.utils;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.function.Predicate;
 
 public class ArrayUtil {
@@ -63,11 +63,12 @@ public class ArrayUtil {
         return Arrays.copyOfRange(data, start, end);
     }
 
+    @SuppressWarnings("unchecked")
     public final static <T> T[] removeRepeat(T[] data, Predicate<T> removeTerm) {
-        var list = new ArrayList<T>();
+        var set = new HashSet<T>();
         for (var item : data)
-            if (!removeTerm.test(item) && !list.contains(item))
-                list.add(item);
-        return list.toArray((T[]) Array.newInstance(data.getClass().getComponentType(), list.size()));
+            if (!removeTerm.test(item))
+                set.add(item);
+        return set.toArray((T[]) Array.newInstance(data.getClass().getComponentType(), set.size()));
     }
 }

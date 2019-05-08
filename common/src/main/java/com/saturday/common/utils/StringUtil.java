@@ -58,6 +58,16 @@ public class StringUtil {
         return obj == null || obj.toString().length() == 0;
     }
 
+    public static boolean equals(Object obj1, Object obj2) {
+        if (obj1 == obj2)
+            return true;
+
+        if (obj1 == null || obj2 == null)
+            return false;
+
+        return obj1.equals(obj2);
+    }
+
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
         return isEmpty(str) ? str : new StringBuilder(str.length()).append(capitalize ? Character.toUpperCase(str.charAt(0)) : Character.toLowerCase(str.charAt(0))).append(str.substring(1)).toString();
     }

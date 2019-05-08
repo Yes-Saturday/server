@@ -9,25 +9,25 @@ public class BaseController {
     @Autowired
     protected HttpServletRequest request;
 
-    HttpSession getSession() {
+    protected HttpSession getSession() {
         return getSession(true);
     }
 
-    HttpSession getSession(boolean var1) {
+    protected HttpSession getSession(boolean var1) {
         return request == null ? null : request.getSession(var1);
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getSessionAttribute(String key) {
+    protected <T> T getSessionAttribute(String key) {
         var session = getSession(false);
         return session == null ? null : (T) session.getAttribute(key);
     }
 
-    void setSessionAttribute(String key, Object value) {
+    protected void setSessionAttribute(String key, Object value) {
         getSession().setAttribute(key, value);
     }
 
-    String getSessionId() {
+    protected String getSessionId() {
         return getSession().getId();
     }
 }

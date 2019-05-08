@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginRequest {
-    @NotNull
+    @NotEmpty
     @Name("登录名")
     private String loginNumber;
-    @NotNull
+    @NotEmpty
     @Name("密码")
     private String password;
 }

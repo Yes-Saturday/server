@@ -6,32 +6,39 @@ import com.github.pagehelper.PageHelper;
 
 public class IPage {
 
-    private final static int DEFAULT_PAGE_SIZE = 8;
+    private final static int DEFAULT_PAGE_SIZE = 10;
 
-    private Integer currentPage;
-    private Integer pageSize;
-    private Boolean isCount;
+    private int currentPage = 0;
+    private int pageSize = 0;
+    private boolean isCount = false;
+    private String orderBy;
 
-    public IPage(String page) {
-        if (StringUtil.isEmpty(page)) {
-            this.pageSize = 0;
-            this.currentPage = 0;
-            this.isCount = false;
-            return;
-        }
-
-        try {
-            currentPage = Integer.valueOf(page);
-        } catch (NumberFormatException e) {
-            currentPage = 1;
-        }
-        this.pageSize = DEFAULT_PAGE_SIZE;
-        this.isCount = true;
+    public IPage() {
     }
 
-    public IPage(String page, Integer pageSize) {
-        this(page);
-        this.pageSize = pageSize != null && pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
+    public IPage(int page) {
+        this(null, page, 0);
+    }
+
+    public IPage(int page, int pageSize) {
+        this(null, page, pageSize);
+    }
+
+    public IPage(String orderBy) {
+        this(orderBy, 0, 0);
+    }
+
+    public IPage(String orderBy, int page) {
+        this(orderBy, page, 0);
+    }
+
+    public IPage(String orderBy, int page, int pageSize) {
+        this.orderBy = orderBy;
+        if (page > 0) {
+            this.currentPage = page;
+            this.pageSize = pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
+            this.isCount = true;
+        }
     }
 
     public <E> Page<E> startPage() {
@@ -45,6 +52,8 @@ public class IPage {
     public final static <E> Page<E> startPage(IPage iPage) {
         if (iPage == null)
             return PageHelper.startPage(0, 0, false, null, null);
+        if (!StringUtil.isEmpty(iPage.orderBy))
+            PageHelper.orderBy(iPage.orderBy);
         return PageHelper.startPage(iPage.currentPage, iPage.pageSize, iPage.isCount, true, null);
     }
 

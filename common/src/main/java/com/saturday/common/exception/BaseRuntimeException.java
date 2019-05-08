@@ -6,14 +6,10 @@ public class BaseRuntimeException extends RuntimeException {
     private String code;
     private String memo;
 
-    public BaseRuntimeException(String code, String message, String memo) {
-        super(message);
+    public BaseRuntimeException(String code, String message, String memo, Throwable e) {
+        super(message, e);
         this.code = code;
         this.memo = memo;
-    }
-
-    public BaseRuntimeException(String message, Exception e) {
-        super(message, e);
     }
 
     public String getCode() {
@@ -26,5 +22,10 @@ public class BaseRuntimeException extends RuntimeException {
 
     public String getDetailMessage() {
         return StringUtil.toString(code, " - ", getMessage(), " : ", memo);
+    }
+
+    @Override
+    public Throwable fillInStackTrace() {
+        return this;
     }
 }

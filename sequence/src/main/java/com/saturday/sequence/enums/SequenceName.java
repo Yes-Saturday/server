@@ -1,19 +1,23 @@
 package com.saturday.sequence.enums;
 
 public enum SequenceName {
-    Blog("博客", "blog_sequence"),
-    Category("分类", "category_sequence"),
-    FileName("文件名", "file_name"),
-    Default("默认", "system_base"),
-    UserId("统一用户", "user_id_sequence")
+    BlogId("BL10", "blog_sequence"),
+    Category("FL11", "category_sequence"),
+    FileName("file_", "file_name"),
+    Default(null, "system_base"),
+    UserId("US103", "user_id_sequence")
     ;
 
-    private String memo;
+    private String code;
     private String name;
 
-    SequenceName(String memo, String name) {
-        this.memo = memo;
+    SequenceName(String code, String name) {
+        this.code = code;
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public String toString() {

@@ -8,6 +8,7 @@ import com.saturday.common.annotation.Verify.NotNull;
 import com.saturday.common.annotation.Verify.Pattern;
 import com.saturday.common.annotation.Verify.Size;
 import com.saturday.common.exception.AssertException;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -18,39 +19,33 @@ import java.util.Set;
 
 public class Validator {
 
-    private final Map<Object, Set<Class<?>>> objects;
-    private final AnnotationFinder annotationFinder;
-
-    public Validator() {
-        objects = new HashMap<>();
-        annotationFinder = new AnnotationFinder();
-    }
-
-    public final static void staticVerify(Object object) throws AssertException {
-        Assert.isNotNull(object, "校验参数为空");
-        new Validator().verify(object);
-    }
+    private final Map<Object, Set<Class<?>>> visited = new HashMap<>();
 
     public final void verify(Object object) throws AssertException {
         try {
             Assert.isNotNull(object, "校验参数为空");
-            doVerify(object);
+            doVerify(object, visited);
         } finally {
-            if (objects != null)
-                objects.clear();
+            if (visited != null)
+                visited.clear();
         }
     }
 
-    private final void doVerify(Object object) throws AssertException {
-        doVerify(object, object.getClass());
+    public final static void staticVerify(Object object) throws AssertException {
+        Assert.isNotNull(object, "校验参数为空");
+        doVerify(object, new HashMap<>());
     }
 
-    private final void doVerify(Object object, Class<?> clazz) throws AssertException {
-        if (isVerified(object, clazz))
+    private final static void doVerify(Object object, Map<Object, Set<Class<?>>> visited) throws AssertException {
+        doVerify(object, object.getClass(), visited);
+    }
+
+    private final static void doVerify(Object object, Class<?> clazz, Map<Object, Set<Class<?>>> visited) throws AssertException {
+        if (isVerified(object, clazz, visited))
             return;
 
         if (clazz.getSuperclass() != null && !clazz.getSuperclass().equals(Object.class))
-            doVerify(object, clazz.getSuperclass());
+            doVerify(object, clazz.getSuperclass(), visited);
 
         for (var field : clazz.getDeclaredFields()) {
             String name = field.getAnnotation(Name.class) == null ? field.getName() : field.getAnnotation(Name.class).value();
@@ -61,47 +56,67 @@ public class Validator {
             } catch (Exception e) {
             }
 
-            verifyNotNull(field, value, name);
-            verifySize(field, value, name);
-            verifyNotEmpty(field, value, name);
-            verifyPattern(field, value, name);
-            verifyLength(field, value, name);
+            // do verify
+            vvVerify(field, value, name);
 
-            if (field.isAnnotationPresent(Verify.class))
+            if (field.isAnnotationPresent(Verify.class)) {
                 if (field.getType().isArray()) {
                     if (value != null)
                         for (var item : (Object[]) value)
-                            doVerify(item, field.getType().getComponentType());
+                            doVerify(item, field.getType().getComponentType(), visited);
                 } else if (value instanceof Collection) {
                     for (var item : (Collection<?>) value)
-                        doVerify(item, field.getType().getComponentType());
+                        doVerify(item, field.getType().getComponentType(), visited);
                 } else
-                    doVerify(value, field.getType());
+                    doVerify(value, field.getType(), visited);
+            }
         }
     }
 
-    private final void verifyNotNull(Field field, Object value, String name) {
+    private final static boolean isVerified(Object object, Class<?> clazz, Map<Object, Set<Class<?>>> visited) {
+        var temp = visited.get(object);
+
+        if (temp == null) {
+            visited.put(object, new HashSet<>() {{
+                add(clazz);
+            }});
+            return false;
+        }
+
+        return !temp.add(clazz);
+    }
+
+    private final static void vvVerify(Field field, Object value, String name) {
+        verifyNotNull(field, value, name);
+        verifySize(field, value, name);
+        verifyNotEmpty(field, value, name);
+        verifyPattern(field, value, name);
+        verifyLength(field, value, name);
+    }
+
+    private final static void verifyNotNull(Field field, Object value, String name) {
         if (field.isAnnotationPresent(NotNull.class))
             Assert.isNotNull(value, "{" + name + "}字段不能为空");
     }
 
-    private final void verifyNotEmpty(Field field, Object value, String name) {
+    private final static void verifyNotEmpty(Field field, Object value, String name) {
         if (field.isAnnotationPresent(NotEmpty.class))
             Assert.isNotEmpty(value, "{" + name + "}字段不能为空");
     }
 
-    private final void verifyPattern(Field field, Object value, String name) {
+    private final static void verifyPattern(Field field, Object value, String name) {
         if (value == null)
             return;
 
-        var pattern = annotationFinder.find(field, Pattern.class);
+        var pattern = AnnotationFinder.getAnnotation(field, Pattern.class);
+        AnnotationUtils.findAnnotation(field, Pattern.class);
         if (pattern == null)
             return;
 
         Assert.isTrue(RegexUtils.isMatch(pattern.value(), value.toString()), "{" + name + "}字段不为正确格式");
     }
 
-    private final void verifyLength(Field field, Object value, String name) {
+    private final static void verifyLength(Field field, Object value, String name) {
         if (value == null)
             return;
 
@@ -117,7 +132,7 @@ public class Validator {
             Assert.isFalse(value.toString().length() < length.min(), "{" + name + "}字段过短");
     }
 
-    private final void verifySize(Field field, Object value, String name) {
+    private final static void verifySize(Field field, Object value, String name) {
         if (value == null)
             return;
 
@@ -139,18 +154,5 @@ public class Validator {
             Assert.isFalse(length > size.max(), "{" + name + "}字段过大");
         if (size.min() > 0)
             Assert.isFalse(length < size.min(), "{" + name + "}字段过小");
-    }
-
-    private final boolean isVerified(Object object, Class<?> clazz) {
-        var temp = objects.get(object);
-
-        if (temp == null) {
-            objects.put(object, new HashSet<>() {{
-                add(clazz);
-            }});
-            return false;
-        }
-
-        return !temp.add(clazz);
     }
 }

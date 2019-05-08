@@ -24,6 +24,10 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+        </dependency>
 
         <!-- self -->
         <dependency>
@@ -37,5 +41,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 </project>

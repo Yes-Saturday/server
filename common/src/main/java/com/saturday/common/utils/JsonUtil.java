@@ -26,4 +26,8 @@ public class JsonUtil {
             return null;
         }
     }
+
+    public final static ObjectMapper getMapper() {
+        return objectMapper;
+    }
 }
