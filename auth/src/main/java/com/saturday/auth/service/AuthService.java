@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.Sqls;
@@ -45,20 +46,7 @@ public class AuthService {
         return authBasicsMapper.selectCountByExample(example) > 0;
     }
 
-    public Set<AuthInfo> getAllTypeAuth() {
-        return typeAuthSet;
-    }
-
-    public Set<AuthInfo> getMethodAuthByTypeCode(String code) {
-        return methodAuthMap.get(code);
-    }
-
-    public Map<String, Set<AuthInfo>> getAllMethodAuth() {
-        return methodAuthMap;
-    }
-
-    private final static Set<AuthInfo> typeAuthSet = new HashSet<>();
-    private final static Map<String, Set<AuthInfo>> methodAuthMap = new HashMap<>();
+    private final static Set<AuthInfo> authSet = new HashSet<>();
     private final static Logger log = LoggerFactory.getLogger(AuthService.class);
 
     @Autowired
@@ -67,28 +55,19 @@ public class AuthService {
     @PostConstruct
     public void loadAllAuth() {
         var start = System.currentTimeMillis();
-        var controllers = applicationContext.getBeansWithAnnotation(Auth.class);
+        var controllers = applicationContext.getBeansWithAnnotation(Controller.class);
         for (var value : controllers.values()) {
             var clazz = value.getClass().getSuperclass();
-            var typeAuth = clazz.getAnnotation(Auth.class);
 
             var methods = clazz.getDeclaredMethods();
             if (methods == null || methods.length == 0)
                 continue;
 
-            Set<AuthInfo> methodAuthSet = new HashSet<>();
-
             for (var method : methods) {
                 Auth auth = method.getAnnotation(Auth.class);
-                if (auth != null && !methodAuthSet.add(new AuthInfo(auth.name(), auth.code())))
+                if (auth != null && !authSet.add(new AuthInfo(auth.name(), auth.code())))
                     throw new InternalException("auth_code repeat -> [" + auth.code() + "]");
             }
-
-            if (methodAuthSet.size() > 0)
-                if (typeAuthSet.add(new AuthInfo(typeAuth.name(), typeAuth.code())))
-                    methodAuthMap.put(typeAuth.code(), methodAuthSet);
-                else
-                    throw new InternalException("auth_code repeat -> [" + typeAuth.code() + "]");
         }
         log.info("PostConstruct process end, method -> [loadAllAuth], time : {}(ms)", System.currentTimeMillis() - start);
     }

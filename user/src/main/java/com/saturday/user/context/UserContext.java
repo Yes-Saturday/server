@@ -1,8 +1,8 @@
-package com.saturday.web.context;
+package com.saturday.user.context;
 
 import com.saturday.user.domain.entity.UserBasics;
 
-public class RequestContext {
+public class UserContext {
     private final static ThreadLocal<UserBasics> userBasicsLocal = new ThreadLocal<>();
 
     public final static ThreadLocal<UserBasics> getUserContext() {

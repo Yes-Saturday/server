@@ -2,8 +2,6 @@ package com.saturday.web.interceptor;
 
 import com.saturday.common.exception.VerifyException;
 import com.saturday.common.utils.CacheUtil;
-import com.saturday.user.domain.entity.UserBasics;
-import com.saturday.web.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -43,6 +41,5 @@ public class SecurityInterceptor implements HandlerInterceptor {
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        RequestContext.clear();
     }
 }

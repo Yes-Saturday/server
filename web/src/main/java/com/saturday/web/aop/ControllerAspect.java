@@ -10,7 +10,7 @@ import com.saturday.common.exception.VerifyException;
 import com.saturday.common.utils.JsonUtil;
 import com.saturday.common.utils.Validator;
 import com.saturday.user.domain.entity.UserBasics;
-import com.saturday.web.context.RequestContext;
+import com.saturday.user.context.UserContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -79,7 +79,7 @@ public class ControllerAspect {
         if (auth == null)
             return;
 
-        UserBasics userBasics = RequestContext.getUserContext().get();
+        UserBasics userBasics = UserContext.getUserContext().get();
         if (userBasics == null)
             throw new AuthorityException(AuthorityException.ResponseCode.not_login);
 
