@@ -16,6 +16,10 @@ public class AuthGroup {
     private String groupId;
     @Column(name = "group_name")
     private String groupName;
-    @Column(name = "remark")
-    private String remark;
+    @Column(name = "pid")
+    private String pid;
+    @Column(name = "lft")
+    private Integer lft;
+    @Column(name = "rgt")
+    private Integer rgt;
 }

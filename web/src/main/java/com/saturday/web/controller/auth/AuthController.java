@@ -25,23 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-@Auth(name = "权限控制器", code = "auth_controller")
 public class AuthController extends BaseController {
 
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/typeAuth")
-    @Auth(name = "类型权限", code = "type_auth")
-    public Object typeAuth() {
-        var typeAuth = authService.getAllTypeAuth();
-        return FrontResponse.success(typeAuth);
-    }
-
-    @GetMapping("/methodAuth")
-    @Auth(name = "方法权限", code = "method_auth")
-    public Object methodAuth(String code) {
-        var methodAuth = authService.getMethodAuthByTypeCode(code);
-        return FrontResponse.success(methodAuth);
-    }
+//    @GetMapping("/typeAuth")
+//    @Auth(name = "类型权限", value = "type_auth")
+//    public Object typeAuth() {
+//        var typeAuth = authService.getAllTypeAuth();
+//        return FrontResponse.success(typeAuth);
+//    }
+//
+//    @GetMapping("/methodAuth")
+//    @Auth(name = "方法权限", value = "method_auth")
+//    public Object methodAuth(String code) {
+//        var methodAuth = authService.getMethodAuthByTypeCode(code);
+//        return FrontResponse.success(methodAuth);
+//    }
 }

@@ -11,10 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class TempController extends BaseController {
     @Autowired
     private AuthService authService;
-
-    @GetMapping("/test")
-    public Object test() {
-        authService.verifyUserAuth("FS000000003", "type_auth");
-        return "";
-    }
 }

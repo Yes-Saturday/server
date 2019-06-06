@@ -83,7 +83,7 @@ public class ControllerAspect {
         if (userBasics == null)
             throw new AuthorityException(AuthorityException.ResponseCode.not_login);
 
-        if (!authService.verifyUserAuth(userBasics.getUserId(), auth.code()))
+        if (!authService.verifyUserAuth(userBasics.getUserId(), auth.value()))
             throw new AuthorityException(AuthorityException.ResponseCode.restrict_access);
     }
 }

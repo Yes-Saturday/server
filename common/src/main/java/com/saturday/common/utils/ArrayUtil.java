@@ -10,19 +10,27 @@ public class ArrayUtil {
         return data == null || data.length == 0;
     }
 
-    public static String toString(Object[] data, String delimiter) {
+    public static String toString(Object[] data, String begin, String end, String delimiter) {
         if (isEmpty(data))
             return StringUtil.Empty;
 
         StringBuilder sb = new StringBuilder();
-        for (Object item : data) {
-            if (sb.length() != 0 && !StringUtil.isEmpty(delimiter))
+        if (!StringUtil.isEmpty(begin))
+            sb.append(begin);
+        for (var i = 0; i < data.length; ++i) {
+            if (i > 0 && !StringUtil.isEmpty(delimiter))
                 sb.append(delimiter);
-            if (item != null)
-                sb.append(item.toString());
+            if (data[i] != null)
+                sb.append(data[i].toString());
         }
 
+        if (!StringUtil.isEmpty(end))
+            sb.append(end);
         return sb.toString();
+    }
+
+    public static String toString(Object[] data, String delimiter) {
+        return toString(data, null, null, delimiter);
     }
 
     @SuppressWarnings("unchecked")

@@ -27,6 +27,14 @@ public class StringUtil {
         return ArrayUtil.toString(data, null);
     }
 
+    public static String toDelimiterString(Object[] data, String begin, String end, String delimiter) {
+        return ArrayUtil.toString(data, begin, end, delimiter);
+    }
+
+    public static String toDelimiterString(List<?> data, String begin, String end, String delimiter) {
+        return ArrayUtil.toString(data.toArray(), begin, end, delimiter);
+    }
+
     public final static String[] split(String data, String delimiter) {
         return split(data, delimiter, 0);
     }
@@ -56,6 +64,16 @@ public class StringUtil {
 
     public static boolean isEmpty(Object obj) {
         return obj == null || obj.toString().length() == 0;
+    }
+
+    public static String emptyToNull(String str) {
+        return emptyToNewValue(str, null);
+    }
+
+    public static String emptyToNewValue(String str, String value) {
+        if (isEmpty(str))
+            return value;
+        return str;
     }
 
     public static boolean equals(Object obj1, Object obj2) {

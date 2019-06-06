@@ -7,6 +7,7 @@ import com.saturday.common.exception.BusinessException;
 import com.saturday.common.utils.BaseRSA;
 import com.saturday.common.utils.CacheUtil;
 import com.saturday.common.utils.PasswordHandler;
+import com.saturday.common.utils.UuidUtil;
 import com.saturday.sequence.enums.SequenceName;
 import com.saturday.sequence.service.SequenceService;
 import com.saturday.system.service.RsaService;
@@ -36,7 +37,7 @@ public class UserController extends BaseController {
     private RsaService rsaService;
 
     @PostMapping("/register")
-    @Auth(name = "创建用户", code = "create_user")
+    @Auth(name = "创建用户", value = "create_user")
     public Object create(@Verify RegisterRequest registerRequest) {
         var userBasics = userService.queryUserByLoginNumber(registerRequest.getLoginNumber());
 
