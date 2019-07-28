@@ -45,3 +45,5 @@ mybatis:
 mapper:
   safeDelete: true
   safeUpdate: true
+
+a: 123
