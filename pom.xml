@@ -27,7 +27,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 依赖包版本信息 -->
-        <spring.boot.version>2.1.3.RELEASE</spring.boot.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
         <mybatis.spring.boot.version>1.3.2</mybatis.spring.boot.version>
         <tk.mybatis.spring.boot.version>2.1.5</tk.mybatis.spring.boot.version>
         <mysql.connector.version>8.0.13</mysql.connector.version>
